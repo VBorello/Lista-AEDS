@@ -1,11 +1,6 @@
 
-Commands
-Search
-Recent
-All
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <stdbool.h>
 
 int main()
@@ -49,6 +44,3 @@ int main()
  }
   return 0;
 }
-Results of your code will appear here when you 
-Run
- the project.

@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void apresentacao(){
+    printf("\nTorre de Hanoi\n\n");
+}
+
 void TorreDeHanoi(int n ,char posicao1, char proxposicao, char aux){
     if(n == 1){
         printf("Mova o disco 1 de %c para %c\n", posicao1, proxposicao);
@@ -18,6 +22,8 @@ int numDisc(){
 }
 
 int main(){
+    apresentacao();
+    
     int discos = numDisc();
 
     TorreDeHanoi(discos, 'A', 'C', 'B');

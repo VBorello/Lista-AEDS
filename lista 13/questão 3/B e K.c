@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+void apresentacao(){
+    printf("\nquanto( B ) veses quanto( K ) da N?\n\n");
+}
+
 void teste(int n, int *b, int *k){
     int i, j;
     *b = 1;
@@ -24,6 +28,9 @@ int lerNum(){
 }
 
 int main(){
+
+    apresentacao();
+
     int n, b, k;
 
     n = lerNum();

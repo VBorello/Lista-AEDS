@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+
 int main() {
   printf("\nPolitica de Preços\n\n");
 

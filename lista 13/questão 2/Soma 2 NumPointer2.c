@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void apresentacao(){
+    printf("soma ponterada");
+}
+
 int* lerNum(){
     int* num = (int*)malloc(sizeof(int));
     printf("digite um numero:");
@@ -22,6 +26,9 @@ void escrevaResultado(int resultado){
 
 
 int main(){
+
+    apresentacao();
+    
     int* num1 = lerNum();
     int* num2 = lerNum();
 

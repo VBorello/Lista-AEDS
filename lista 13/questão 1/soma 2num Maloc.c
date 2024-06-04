@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void apresentacao(){
+    printf("soma alocada");
+}
+
 int* lerNum(){
     int* num = (int*)malloc(sizeof(int));
     printf("digite um numero:");
@@ -17,6 +21,9 @@ void liberarMemoria(int* numero){
 }
 
 int main(){
+
+    apresentacao();
+
     int* num1 = lerNum();
     int* num2 = lerNum();
 

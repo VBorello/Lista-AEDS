@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+void apresentacao(){
+    printf("\nPrimo antecessor e sucessor de M\n\n");
+}
+
 bool primo(int num){
     if(num <= 1){
         return false;
@@ -31,6 +35,9 @@ int lerM(){
     return m;
 }
 int main(){
+
+    apresentacao();
+    
     int m, p1, p2;
     m = lerM();
 

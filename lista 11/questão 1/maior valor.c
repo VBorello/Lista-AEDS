@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-void apresentacao();
-	preintf(\nMaior e Menor entre x numeros\n\n);
+void apresentacao(){
+	printf("\nMaior e Menor entre x numeros\n\n");
 }
 
 void encontreMaior(int n){
@@ -15,7 +15,7 @@ void encontreMaior(int n){
 
 
 	for (int i = 2; i <= n; i++){
-		printf("digite o %d numero" i);
+		printf("digite o %d numero", i);
 		scanf("%d", &num);
 
 		if(num > maior){
