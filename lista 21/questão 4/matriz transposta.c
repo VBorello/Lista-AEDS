@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 void apresentacao() {
-    printf("\nFuncao ler e print matriz\n\n");
+    printf("\nFuncao matriz transposta\n\n");
 }
 
 int tamanhoMatriz() {

@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 void apresentacao() {
-    printf("\nFuncao ler e print matriz\n\n");
+    printf("\nFuncao matriz igual ou diferente\n\n");
 }
 
 int tamanhoMatriz() {
