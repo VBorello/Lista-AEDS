@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void apresentacao(){
-    printf("\nSoma dos Valores na Matriz \n\n");
+    printf("\nSoma dos Valores na Matriz recursiva\n\n");
 }
 
 int lerTamanho() {

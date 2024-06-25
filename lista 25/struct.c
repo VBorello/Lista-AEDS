@@ -22,12 +22,12 @@ int main(){
         fflush(stdin);
         fgets(a[i]->nome, 50, stdin);
         printf("\n Nota:");
-        scanf("%f", &a[i]->nota);
+        scanf("%f", &a[i] -> nota);
     }
     
     for(int i = 0; i < max; i++){
-        printf("\n nome: %s", a[i]->nome);
-        printf("\n nota: %.2f", a[i]->nota);
+        printf("\n nome: %s", a[i] -> nome);
+        printf("\n nota: %.2f", a[i] -> nota);
     }
         
     return 0;
