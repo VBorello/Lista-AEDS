@@ -1,57 +1,48 @@
 #include <iostream>
 
+using namespace std;
+
 class Quadrado {
 private:
-    float lado;
+    int lado;
 
 public:
 
     Quadrado() : lado(0) {}
 
-    void setLado(float l) {
-        if (l <= 0) {
-            std::cout << "Pode negativo não Nengue" << std::endl;
-            lado = 0;
-        } else {
-            lado = l;
-        }
+    void setLado(int lado){
+        this -> lado = lado;
     }
 
-    float getLado(){
+    int getLado(){
         return lado;
     }
 
-    float perimetro(){
-        return 4 * lado;
+    int perimetro(){
+        return lado * 4;
     }
 
-    float area(){
+    int area(){
         return lado * lado;
     }
 
     void lerLado(){
-        float l;
-        std::cout << "Digite o valor do lado: ";
-        std::cin >> l;
-        setLado(l);
+        cout << "digite o valor do lado:";
+        cin >> lado;
     }
 
-    void exibirLado(){
-        std::cout << "Valor do lado: " << lado << std::endl;
+    void printALL(){
+        cout << "\nlado:" << lado;
+        cout << "\nperimetro:" << perimetro();
+        cout << "\narea:" << area(); 
     }
 };
 
-int main() {
-    
-    Quadrado q;
+int main(){
+    Quadrado square;
 
-    q.lerLado();
-
-    q.exibirLado();
-
-    std::cout << "Perímetro: " << q.perimetro() << std::endl;
-
-    std::cout << "Área: " << q.area() << std::endl;
+    square.lerLado();
+    square.printALL();
 
     return 0;
 }
