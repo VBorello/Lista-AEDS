@@ -2,8 +2,6 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 #define max 1000
 
 class Data
@@ -16,9 +14,9 @@ private:
 public:
     Data() : dia(0), mes(0), ano(0) {} //construtor inicializa a data como 0/0/0
     Data(int dia, int mes, int ano) {  //Construtor 
-        this -> dia = dia;
-        this -> mes = mes;
-        this -> ano = ano;
+        this->dia = dia;
+        this->mes = mes;
+        this->ano = ano;
     }
     //para definir
     void setDia(int dia);
@@ -36,31 +34,31 @@ public:
 };
 
 void Data::setDia(int dia){
-    this -> dia = dia;
+    this->dia = dia;
 }
 
 void Data::setMes(int mes){
-    this -> mes = mes;
+    this->mes = mes;
 }
 
 void Data::setAno(int ano){
-    this -> ano = ano;
+    this->ano = ano;
 }
 
 int Data::getDia(){
-    return this -> dia;
+    return this->dia;
 }
 
 int Data::getMes(){
-    return this -> mes;
+    return this->mes;
 }
 
 int Data::getAno(){
-    return this -> ano;
+    return this->ano;
 }
 
 bool Data::ehBissexto(){
-    if ((this->ano % 4 == 0 && this -> ano % 100 != 0) || (this->ano % 400 == 0)) {
+    if ((this->ano % 4 == 0 && this->ano % 100 != 0) || (this->ano % 400 == 0)) {
         return true;
     }
     return false;
@@ -69,14 +67,14 @@ bool Data::ehBissexto(){
 bool Data::validarData(){
     bool dataValida = true;
 
-    if(this->dia < 1 || this -> dia > 31 || this -> mes < 1 || this -> mes > 12 || this -> ano < 0 ||
-       (this -> mes == 2 && ((this->ehBissexto() && this -> dia > 29) || (!this -> ehBissexto() && this -> dia > 28))) || 
-       (this -> mes == 4 && this -> dia > 30) || 
-       (this -> mes == 6 && this -> dia > 30) || 
-       (this -> mes == 9 && this -> dia > 30) || 
-       (this -> mes == 11 && this -> dia > 30)){
+    if(this->dia < 1 || this->dia > 31 || this->mes < 1 || this->mes > 12 || this->ano < 0 ||
+       (this->mes == 2 && ((this->ehBissexto() && this->dia > 29) || (!this->ehBissexto() && this->dia > 28))) || 
+       (this->mes == 4 && this->dia > 30) || 
+       (this->mes == 6 && this->dia > 30) || 
+       (this->mes == 9 && this->dia > 30) || 
+       (this->mes == 11 && this->dia > 30)){
         dataValida = false;
-        cout << "Data invalida." << endl;
+        std::cout << "Data invalida." << std::endl;
     }
     return dataValida;
 }
@@ -84,28 +82,28 @@ bool Data::validarData(){
 void Data::lerData(){
     int dia, mes, ano;
     do {
-        cout << "Digite a data (dia mes ano): ";
-        string input;
-        cin.ignore();
-        getline(cin, input);
-        stringstream ss(input);
+        std::cout << "Digite a data (dia mes ano): ";
+        std::string input;
+        std::cin.ignore();
+        getline(std::cin, input);
+        std::stringstream ss(input);
         ss >> dia >> mes >> ano;
 
         this->setDia(dia);
         this->setMes(mes);
         this->setAno(ano);
 
-    } while(!this -> validarData());
+    } while(!this->validarData());
 }
 
 void Data::printData(){ 
-    cout << this -> dia << "/" << this -> mes << "/" << this -> ano << endl;
+    std::cout << this->dia << "/" << this->mes << "/" << this->ano << std::endl;
 }
 
 class Pessoa
 {
 private:
-    string nome;
+    std::string nome;
     Data nascimento;
     static int qtd; //contador de pessoa static(para todas as funções terem acesso)
 
@@ -115,18 +113,20 @@ public:
     }
 
     Pessoa(){
-        this -> nascimento = Data();
+        this->nascimento = Data();
         qtd++;
     }
 
-    void setNome(string nome);
+    void setNome(std::string nome);
 
-    string getNome();
+    std::string getNome();
 
     void lerNome();
     void printNome();
     void lerPessoa();
     void printPessoa();
+    
+    virtual void escrevaPessoa();
 
     Data getDataNascimento() {
         return nascimento;
@@ -135,25 +135,25 @@ public:
 
 int Pessoa::qtd = 0;
 
-void Pessoa::setNome(string nome){
-    this -> nome = nome;
+void Pessoa::setNome(std::string nome){
+    this->nome = nome;
 }
 
-string Pessoa::getNome(){
-    return this -> nome;
+std::string Pessoa::getNome(){
+    return this->nome;
 }
 
 void Pessoa::lerNome(){
-    string nome;
-    cout << "Digite um nome: ";
-    cin.ignore();
-    getline(cin, nome);
+    std::string nome;
+    std::cout << "Digite um nome: ";
+    std::cin.ignore(); //ignora o enter após a entrada numérica
+    getline(std::cin, nome); //agora pode ler corretamente a linha inteira
 
     setNome(nome);
 }
 
 void Pessoa::printNome(){
-    cout << this -> nome << endl;
+    std::cout << this->nome << std::endl;
 }
 
 void Pessoa::lerPessoa(){
@@ -166,9 +166,14 @@ void Pessoa::printPessoa(){
     nascimento.printData();
 }
 
+void Pessoa::escrevaPessoa(){
+    std::cout << "Nome: " << nome << "\nData de Nascimento: ";
+    nascimento.printData();
+}
+
 class Aluno: public Pessoa{    
 private:
-    string matricula; 
+    std::string matricula; 
     static int qtd;
 
 public:
@@ -180,25 +185,30 @@ public:
         qtd--;
     }
 
-    void setMatricula(string matricula){
-        this -> matricula = matricula;
+    void setMatricula(std::string matricula){
+        this->matricula = matricula;
     }
 
-    string getMatricula(){
+    std::string getMatricula(){
         return matricula;        
     }
 
     void lerAluno() {
         lerPessoa();
-        string matricula;
-        cout << "Digite a matricula: ";
-        cin >> matricula;
+        std::string matricula;
+        std::cout << "Digite a matricula: ";
+        std::cin >> matricula;
         setMatricula(matricula);
     }
 
     void printAluno() {
         printPessoa();
-        cout << "Matricula: " << matricula << endl;
+        std::cout << "Matricula: " << matricula << std::endl;
+    }
+
+    void escrevaPessoa() override {
+        Pessoa::escrevaPessoa();
+        std::cout << "Matricula: " << matricula << std::endl;
     }
 
     static int getQtdAlunos() {
@@ -210,7 +220,7 @@ int Aluno::qtd = 0;
 
 class Professor: public Pessoa{
 private:
-    string titulacao;
+    std::string titulacao;
     static int qtd;
 
 public:
@@ -222,24 +232,29 @@ public:
         qtd--;
     }
 
-    void setTitulacao(string titulacao){
-        this -> titulacao = titulacao;
+    void setTitulacao(std::string titulacao){
+        this->titulacao = titulacao;
     }
 
-    string getTitulacao(){
+    std::string getTitulacao(){
         return titulacao;
     }
 
     void lerProfessor() {
         lerPessoa();
-        cout << "Digite a titulação: ";
-        cin.ignore();
-        getline(cin, titulacao);
+        std::cout << "Digite a titulação: ";
+        std::cin.ignore();
+        getline(std::cin, titulacao);
     }
 
     void printProfessor() {
         printPessoa();
-        cout << "Titulação: " << titulacao << endl;
+        std::cout << "Titulação: " << titulacao << std::endl;
+    }
+
+    void escrevaPessoa() override {
+        Pessoa::escrevaPessoa();
+        std::cout << "Titulação: " << titulacao << std::endl;
     }
 
     static int getQtdProfessores() {
@@ -253,9 +268,9 @@ void listarAniversariantes(Pessoa* pessoas[], int qtdPessoas, int mes) {
     for (int i = 0; i < qtdPessoas; ++i) {
         if (pessoas[i]->getDataNascimento().getMes() == mes) {
             if (pessoas[i]->getDataNascimento().validarData()) {
-                pessoas[i]->printPessoa();
+                pessoas[i]->escrevaPessoa();
             } else {
-                cout << "Data invalida" << pessoas[i]->getNome() << ".\n";
+                std::cout << "Data invalida " << pessoas[i]->getNome() << ".\n";
             }
         }
     }
@@ -264,72 +279,134 @@ void listarAniversariantes(Pessoa* pessoas[], int qtdPessoas, int mes) {
 void menu(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]) {
     int opcao;
     do {
-        cout << "\nMenu de Opcoes:\n";
-        cout << "0 – Sair\n";
-        cout << "1 – Cadastrar aluno\n";
-        cout << "2 – Cadastrar professor\n";
-        cout << "3 – Listar alunos\n";
-        cout << "4 – Listar professores\n";
-        cout << "5 – Listar todos os aniversariantes do mes\n";
-        cout << "Escolha uma opção: ";
-        cin >> opcao;
+        std::cout << "\nMenu Principal:\n";
+        std::cout << "0 – Sair\n";
+        std::cout << "1 – Cadastrar aluno ou professor(a/p):\n";
+        std::cout << "2 – Listar alunos ou professores(a/p):\n";
+        std::cout << "3 - Alterar alunos ou professores(a/p):\n";
+        std::cout << "4 - Excluir alunos ou profesorres(a/p):\n";
+        std::cout << "5 – Listar todos os aniversariantes do mes\n";
+        std::cout << "Escolha uma opção: ";
+        std::cin >> opcao;
 
         switch (opcao) {
             case 0:
-                cout << "fim\n";
+                std::cout << "fim\n";
                 break;
             case 1: {
-                
-                if (Aluno::getQtdAlunos() < max) {
-                    Aluno* aluno = new Aluno();
-                    aluno -> lerAluno();
-                    alunos[Aluno::getQtdAlunos() - 1] = aluno;
-                    pessoas[Pessoa::getQtd() - 1] = aluno;
-                } else {
-                    cout << "Numero maximo de cadastros atingido\n";
-                }
-                break;
+                cadastro();
 
+                break;
             }
+
             case 2: {
-
-                if (Professor::getQtdProfessores() < max) {
-                    Professor* professor = new Professor();
-                    professor -> lerProfessor();
-                    professores[Professor::getQtdProfessores() - 1] = professor;
-                    pessoas[Pessoa::getQtd() - 1] = professor;
-                } else {
-                    cout << "Numero maximo de cadastros atingido\n";
-                }
+                listar();
+                
                 break;
+            }
+
+            case 3: {
 
             }
-            case 3:
 
-                for (int i = 0; i < Aluno::getQtdAlunos(); ++i) {
-                    alunos[i]->printAluno();
-                }
-                break;
+            case 4: {
 
-            case 4:
-
-                for (int i = 0; i < Professor::getQtdProfessores(); ++i) {
-                    professores[i]->printProfessor();
-                }
-                break;
+            }
 
             case 5: {
                 int mes;
-                cout << "Digite o mes: ";
-                cin >> mes;
+                std::cout << "Digite o mes: ";
+                std::cin >> mes;
                 listarAniversariantes(pessoas, Pessoa::getQtd(), mes);
                 break;
             }
             default:
-                cout << "Opcao invalida.\n";
+                std::cout << "Opcao invalida.\n";
                 break;
         }
     } while (opcao != 0);
+}
+
+void cadastro(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
+    int opcao;
+    do{
+        std::cout <<"\n Menu de Cadastro:\n";
+        std::cout <<"0 - Voltar ao Menu Principal\n";
+        std::cout <<"1 - Cadastrar Aluno\n";
+        std::cout <<"2 - Cadastrar Professor\n";
+        std::cout << "Escolha uma opção: ";
+        std::cin >> opcao;
+
+        switch (opcao) {
+            case 0:{
+                menu();
+            
+                break;
+            }
+
+            case 1:{
+                if (Aluno::getQtdAlunos() < max) {
+                    Aluno* aluno = new Aluno();
+                    aluno->lerAluno();
+                    alunos[Aluno::getQtdAlunos() - 1] = aluno;
+                    pessoas[Pessoa::getQtd() - 1] = aluno;
+                } else {
+                    std::cout << "Numero maximo de cadastros atingido\n";
+                }
+
+                break;
+            }
+
+            case 2:{
+                if (Professor::getQtdProfessores() < max) {
+                    Professor* professor = new Professor();
+                    professor->lerProfessor();
+                    professores[Professor::getQtdProfessores() - 1] = professor;
+                    pessoas[Pessoa::getQtd() - 1] = professor;
+                } else {
+                    std::cout << "Numero maximo de cadastros atingido\n";
+                }
+
+                break;
+            }                
+        }
+    } while (opcao != 0);
+}
+
+void listar(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
+    int opcao;
+    do{
+        std::cout <<"Menu Listagem:";
+        std::cout <<"0 - Voltar ao Menu Principal\n";
+        std::cout <<"1 - Listar Alunos\n";
+        std::cout <<"2 - Listar Professores\n";
+        std::cout << "Escolha uma opção: ";
+        std::cin >> opcao;
+
+        switch (opcao) {
+            case 0:{
+                menu();
+
+                break;
+            }
+
+            case 1:{
+                for (int i = 0; i < Aluno::getQtdAlunos(); ++i) {
+                    alunos[i]->printAluno();
+                }
+
+                break;
+            }
+        
+            case 2:{
+                for (int i = 0; i < Professor::getQtdProfessores(); ++i) {
+                    professores[i]->printProfessor();
+                }
+
+                break;
+            }
+        }
+    }while (opcao != 0);
 }
 
 int main(){
