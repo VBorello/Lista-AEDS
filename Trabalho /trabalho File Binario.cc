@@ -282,6 +282,7 @@ void salvarDados(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
     if(arq == NULL){
         std::cerr <<"erro ao abrir arquivo";
         return;
+
     }
 
     fclose(arq); 
