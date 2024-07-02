@@ -284,21 +284,7 @@ void salvarDados(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
         return;
     }
 
-    fprintf(arq, "%d %d\n", Aluno::getQtdAlunos(), Professor::getQtdProfessores());
-
-    for(int i = 0; i < Aluno::getQtdAlunos(); i++){
-        Aluno* aluno = alunos[i];
-        fprintf(arq, "A %s %d %d %d %s\n", aluno -> getNome().c_str(), aluno -> getDataNascimento().getDia(),
-            aluno -> getDataNascimento().getMes(), aluno -> getDataNascimento().getAno(), aluno -> getMatricula().c_str());
-    }
-
-    for(int i = 0; i < Professor::getQtdProfessores(); i++){
-        Professor* professor = professores[i];
-        fprintf(arq, "P %s %d %d %d %s\n", professor -> getNome().c_str(), professor -> getDataNascimento().getDia(),
-            professor -> getDataNascimento().getMes(), professor -> getDataNascimento().getAno(), professor -> getTitulacao().c_str());
-    }
-
-    fclose(arq); 
+    
 }
 
 void lerDados(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
@@ -307,53 +293,7 @@ void lerDados(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
         std::cerr <<"erro ao abrir arquivo";
         return;
     }
-
-    int qtdAlunos, qtdProfessores;
-    fscanf(arq, "%d %d", &qtdAlunos, &qtdProfessores);
-
-    for(int i = 0; i < qtdAlunos; i++){
-        Aluno* aluno = new Aluno();
-        std::string nome, matricula;
-        int dia, mes, ano;
-        char sting[100];
-
-        fscanf(arq, " A %s %d %d %d %s", sting, &dia, &mes, &ano, sting);
-        nome = sting;
-        matricula = sting;
-
-        aluno -> setNome(nome);
-        aluno -> getDataNascimento().setDia(dia);
-        aluno -> getDataNascimento().setMes(mes);
-        aluno -> getDataNascimento().setAno(ano);
-        aluno -> setMatricula(matricula);
-
-        alunos[i] = aluno;
-        pessoas[Pessoa::getQtd() - 1] = aluno;
-
-        std::cout << aluno[1].getNome(), aluno[1].getDataNascimento(), aluno[1].getMatricula();
-    }
-
-    for(int i = 0; i < qtdProfessores; i++){
-        Professor* professor = new Professor();
-        std::string nome, titulacao;
-        int dia, mes, ano;
-        char string[100];
-
-        fscanf(arq, " P %s %d %d %d %s", string, &dia, &mes, &ano, string);
-        nome = string;
-        titulacao = string;
-
-        professor->setNome(nome);
-        professor->getDataNascimento().setDia(dia);
-        professor->getDataNascimento().setMes(mes);
-        professor->getDataNascimento().setAno(ano);
-        professor->setTitulacao(titulacao);
-
-        professores[i] = professor;
-        pessoas[Pessoa::getQtd() - 1] = professor;
-    }
-
-    fclose(arq);
+       
 }
 
 void cadastro(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
@@ -446,7 +386,6 @@ void menu(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]) {
         std::cout << "3 - Alterar alunos ou professores(a/p):\n";
         std::cout << "4 - Excluir alunos ou profesorres(a/p):\n";
         std::cout << "5 – Listar todos os aniversariantes do mes\n";
-        std::cout << "6 - salvar\n";
         std::cout << "Escolha uma opção: ";
         std::cin >> opcao;
 
@@ -485,16 +424,9 @@ void menu(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]) {
                 break;
             }
 
-            case 6: {
-                lerDados(pessoas, alunos, professores);
-            
-                break;
-            }
-
             default:{
                 std::cout << "Opcao invalida.\n";
                 break;
-
             }
         }
     } while (opcao != 0);
