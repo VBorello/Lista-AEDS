@@ -315,11 +315,11 @@ void lerDados(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
         Aluno* aluno = new Aluno();
         std::string nome, matricula;
         int dia, mes, ano;
-        char buffer[100];
+        char sting[100];
 
-        fscanf(arq, " A %s %d %d %d %s", buffer, &dia, &mes, &ano, buffer);
-        nome = buffer;
-        matricula = buffer;
+        fscanf(arq, " A %s %d %d %d %s", sting, &dia, &mes, &ano, sting);
+        nome = sting;
+        matricula = sting;
 
         aluno -> setNome(nome);
         aluno -> getDataNascimento().setDia(dia);
@@ -337,11 +337,11 @@ void lerDados(Pessoa* pessoas[], Aluno* alunos[], Professor* professores[]){
         Professor* professor = new Professor();
         std::string nome, titulacao;
         int dia, mes, ano;
-        char buffer[100];
+        char string[100];
 
-        fscanf(arq, " P %s %d %d %d %s", buffer, &dia, &mes, &ano, buffer);
-        nome = buffer;
-        titulacao = buffer;
+        fscanf(arq, " P %s %d %d %d %s", string, &dia, &mes, &ano, string);
+        nome = string;
+        titulacao = string;
 
         professor->setNome(nome);
         professor->getDataNascimento().setDia(dia);
