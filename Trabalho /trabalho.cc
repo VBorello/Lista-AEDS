@@ -557,7 +557,12 @@ int main() {
     Aluno *alunos[max];
     Professor *professores[max];
 
-    menu(pessoas, alunos, professores);
+    try {
+        menu(pessoas, alunos, professores);
+    } catch (std::bad_alloc& e) {
+        std::cerr << "Erro de alocação de memória: " << e.what() << std::endl;
+        return 1; // Retorna um código de erro
+    }
 
     //libera a memória alocada para cada objeto criado
     for (int i = 0; i < Pessoa::getQtd(); ++i) {
