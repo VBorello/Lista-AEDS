@@ -14,40 +14,40 @@ private:
 public:
     Data() : dia(0), mes(0), ano(0) {} //construtor inicializa a data como 0/0/0
     Data(int dia, int mes, int ano) {  //construtor com parâmetros para inicialização
-        this->dia = dia;
-        this->mes = mes;
-        this->ano = ano;
+        this -> dia = dia;
+        this -> mes = mes;
+        this -> ano = ano;
     }
 
     //métodos para definir dia, mês e ano
     void setDia(int dia) {
-        this->dia = dia;
+        this -> dia = dia;
     }
 
     void setMes(int mes) {
-        this->mes = mes;
+        this -> mes = mes;
     }
 
     void setAno(int ano) {
-        this->ano = ano;
+        this -> ano = ano;
     }
 
     //metodos para retornar dia, mês e ano
     int getDia() {
-        return this->dia;
+        return this -> dia;
     }
 
     int getMes() {
-        return this->mes;
+        return this -> mes;
     }
 
     int getAno() {
-        return this->ano;
+        return this -> ano;
     }
 
     //verifica se o ano é bissexto
     bool bissexto() {
-        if ((this->ano % 4 == 0 && this->ano % 100 != 0) || (this->ano % 400 == 0)) {
+        if ((this -> ano % 4 == 0 && this -> ano % 100 != 0) || (this -> ano % 400 == 0)) {
             return true;
         }
         return false;
@@ -57,12 +57,12 @@ public:
     bool validarData() {
         bool dataValida = true;
 
-        if (this->dia < 1 || this->dia > 31 || this->mes < 1 || this->mes > 12 || this->ano < 1 ||
-            (this->mes == 2 && ((this->bissexto() && this->dia > 29) || (!this->bissexto() && this->dia > 28))) ||
-            (this->mes == 4 && this->dia > 30) ||
-            (this->mes == 6 && this->dia > 30) ||
-            (this->mes == 9 && this->dia > 30) ||
-            (this->mes == 11 && this->dia > 30)) {
+        if (this -> dia < 1 || this -> dia > 31 || this -> mes < 1 || this -> mes > 12 || this -> ano < 1 ||
+            (this -> mes == 2 && ((this -> bissexto() && this -> dia > 29) || (!this -> bissexto() && this -> dia > 28))) ||
+            (this -> mes == 4 && this -> dia > 30) ||
+            (this -> mes == 6 && this -> dia > 30) ||
+            (this -> mes == 9 && this -> dia > 30) ||
+            (this -> mes == 11 && this -> dia > 30)) {
             dataValida = false;
             std::cout << "Data inválida." << std::endl;
         }
@@ -76,16 +76,16 @@ public:
             std::cout << "Digite a data (dia mes ano): ";
             std::cin >> dia >> mes >> ano;
 
-            this->setDia(dia);
-            this->setMes(mes);
-            this->setAno(ano);
+            this -> setDia(dia);
+            this -> setMes(mes);
+            this -> setAno(ano);
 
-        } while (!this->validarData());
+        } while (!this -> validarData());
     }
 
     //método para imprimir a data
     void printData() {
-        std::cout << this->dia << "/" << this->mes << "/" << this->ano << std::endl;
+        std::cout << this -> dia << "/" << this -> mes << "/" << this -> ano << std::endl;
     }
 };
 
@@ -106,11 +106,11 @@ public:
     }
 
     void setNome(std::string nome) {
-        this->nome = nome;
+        this -> nome = nome;
     }
 
     std::string getNome() {
-        return this->nome;
+        return this -> nome;
     }
 
     //método para ler o nome da pessoa
@@ -121,7 +121,7 @@ public:
 
     //método para imprimir o nome da pessoa
     void printNome() {
-        std::cout << this->nome << std::endl;
+        std::cout << this -> nome << std::endl;
     }
 
     //método para ler dados da pessoa (nome e data de nascimento)
@@ -170,7 +170,7 @@ public:
     }
 
     void setMatricula(std::string matricula) {
-        this->matricula = matricula;
+        this -> matricula = matricula;
     }
 
     std::string getMatricula() {
@@ -219,7 +219,7 @@ public:
     }
 
     void setTitulacao(std::string titulacao) {
-        this->titulacao = titulacao;
+        this -> titulacao = titulacao;
     }
 
     std::string getTitulacao() {
@@ -229,7 +229,7 @@ public:
     //método para ler dados de um professor (nome, data de nascimento e titulação)
     void lerProfessor() {
         lerPessoa();
-        std::cout << "Digite a titulação: ";
+        std::cout << "Digite a titulacao: ";
         std::cin >> titulacao;
     }
 
@@ -250,8 +250,8 @@ int Professor::qtd = 0; //inicialização do contador estático
 
 void listarAniversariantes(Pessoa *pessoas[], int qtdPessoas, int mes) {
     for (int i = 0; i < qtdPessoas; ++i) {
-        if (pessoas[i]->getDataNascimento().getMes() == mes) {
-            pessoas[i]->escrevaPessoa();
+        if (pessoas[i] -> getDataNascimento().getMes() == mes) {
+            pessoas[i] -> escrevaPessoa();
         }
     }
 }
@@ -260,28 +260,28 @@ void salvarDados(Pessoa *pessoas[], Aluno *alunos[], Professor *professores[]) {
     std::ofstream arquivo("dados.txt");
 
     if (!arquivo) {
-        std::cerr << "Erro ao abrir arquivo para escrita." << std::endl;
+        std::cerr << "Erro ao abrir arquivo." << std::endl;
         return;
     }
 
     //escreve os dados dos alunos no arquivo
     for (int i = 0; i < Aluno::getQtdAlunos(); ++i) {
         arquivo << "Aluno\n";
-        arquivo << alunos[i]->getNome() << "\n";
-        arquivo << alunos[i]->getDataNascimento().getDia() << " "
-                << alunos[i]->getDataNascimento().getMes() << " "
-                << alunos[i]->getDataNascimento().getAno() << "\n";
-        arquivo << alunos[i]->getMatricula() << "\n";
+        arquivo << alunos[i] -> getNome() << "\n";
+        arquivo << alunos[i] -> getDataNascimento().getDia() << " "
+                << alunos[i] -> getDataNascimento().getMes() << " "
+                << alunos[i] -> getDataNascimento().getAno() << "\n";
+        arquivo << alunos[i] -> getMatricula() << "\n";
     }
 
     //escreve os dados dos professores no arquivo
     for (int i = 0; i < Professor::getQtdProfessores(); ++i) {
         arquivo << "Professor\n";
-        arquivo << professores[i]->getNome() << "\n";
-        arquivo << professores[i]->getDataNascimento().getDia() << " "
-                << professores[i]->getDataNascimento().getMes() << " "
-                << professores[i]->getDataNascimento().getAno() << "\n";
-        arquivo << professores[i]->getTitulacao() << "\n";
+        arquivo << professores[i] -> getNome() << "\n";
+        arquivo << professores[i] -> getDataNascimento().getDia() << " "
+                << professores[i] -> getDataNascimento().getMes() << " "
+                << professores[i] -> getDataNascimento().getAno() << "\n";
+        arquivo << professores[i] -> getTitulacao() << "\n";
     }
 
     arquivo.close();
@@ -294,7 +294,7 @@ std::string lerArquivoParaString() {
     std::string conteudo;
 
     if (!arquivo) {
-        std::cerr << "Erro ao abrir arquivo para leitura." << std::endl;
+        std::cerr << "Erro ao abrir arquivo." << std::endl;
         return "";
     }
 
@@ -324,11 +324,11 @@ void cadastro(Pessoa *pessoas[], Aluno *alunos[], Professor *professores[]) {
             case 1: {
                 if (Aluno::getQtdAlunos() < max) {
                     Aluno *aluno = new Aluno();
-                    aluno->lerAluno();
+                    aluno -> lerAluno();
                     alunos[Aluno::getQtdAlunos() - 1] = aluno;
                     pessoas[Pessoa::getQtd() - 1] = aluno;
                 } else {
-                    std::cout << "Número máximo de cadastros de alunos atingido\n";
+                    std::cout << "Numero máximo de cadastros atingido\n";
                 }
                 break;
             }
@@ -336,11 +336,11 @@ void cadastro(Pessoa *pessoas[], Aluno *alunos[], Professor *professores[]) {
             case 2: {
                 if (Professor::getQtdProfessores() < max) {
                     Professor *professor = new Professor();
-                    professor->lerProfessor();
+                    professor -> lerProfessor();
                     professores[Professor::getQtdProfessores() - 1] = professor;
                     pessoas[Pessoa::getQtd() - 1] = professor;
                 } else {
-                    std::cout << "Número máximo de cadastros de professores atingido\n";
+                    std::cout << "Numero máximo de cadastros atingido\n";
                 }
                 break;
             }
@@ -365,30 +365,30 @@ void alterarCadastro(Pessoa *pessoas[], Aluno *alunos[], Professor *professores[
 
             case 1: {
                 int indiceAluno;
-                std::cout << "Digite o índice do aluno a ser alterado (1-" << Aluno::getQtdAlunos() << "): ";
+                std::cout << "Digite o numero do aluno para alterar (1-" << Aluno::getQtdAlunos() << "): ";
                 std::cin >> indiceAluno;
 
                 if (indiceAluno > 0 && indiceAluno <= Aluno::getQtdAlunos()) {
-                    alunos[indiceAluno - 1]->lerAluno();
+                    alunos[indiceAluno - 1] -> lerAluno();
                     pessoas[indiceAluno - 1] = alunos[indiceAluno - 1];
-                    std::cout << "Aluno alterado com sucesso.\n";
+                    std::cout << "Aluno alterado.\n";
                 } else {
-                    std::cout << "Índice de aluno inválido.\n";
+                    std::cout << "Numero do aluno invalido.\n";
                 }
                 break;
             }
 
             case 2: {
                 int indiceProfessor;
-                std::cout << "Digite o índice do professor a ser alterado (1-" << Professor::getQtdProfessores() << "): ";
+                std::cout << "Digite o numero do professor para alterar (1-" << Professor::getQtdProfessores() << "): ";
                 std::cin >> indiceProfessor;
 
                 if (indiceProfessor > 0 && indiceProfessor <= Professor::getQtdProfessores()) {
-                    professores[indiceProfessor - 1]->lerProfessor();
+                    professores[indiceProfessor - 1] -> lerProfessor();
                     pessoas[indiceProfessor - 1] = professores[indiceProfessor - 1];
-                    std::cout << "Professor alterado com sucesso.\n";
+                    std::cout << "Professor alterado.\n";
                 } else {
-                    std::cout << "Índice de professor inválido.\n";
+                    std::cout << "Numero de professor inválido.\n";
                 }
                 break;
             }
@@ -470,7 +470,7 @@ void listar(Pessoa *pessoas[], Aluno *alunos[], Professor *professores[]) {
             case 1: {
                 //lista todos os alunos cadastrados
                 for (int i = 0; i < Aluno::getQtdAlunos(); ++i) {
-                    alunos[i]->printAluno();
+                    alunos[i] -> printAluno();
                 }
 
                 //lê e exibe o conteúdo do arquivo de dados
@@ -483,7 +483,7 @@ void listar(Pessoa *pessoas[], Aluno *alunos[], Professor *professores[]) {
             case 2: {
                 //lista todos os professores cadastrados
                 for (int i = 0; i < Professor::getQtdProfessores(); ++i) {
-                    professores[i]->printProfessor();
+                    professores[i] -> printProfessor();
                 }
                 
                 //lê e exibe o conteúdo do arquivo de dados
