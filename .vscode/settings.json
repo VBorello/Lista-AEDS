@@ -49,6 +49,9 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "cstring": "cpp",
-        "fstream": "cpp"
-    }
+        "fstream": "cpp",
+        "ctime": "cpp",
+        "iomanip": "cpp"
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/clang++"
 }
