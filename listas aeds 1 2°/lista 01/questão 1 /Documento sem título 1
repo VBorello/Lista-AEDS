@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void apresentacao(){
+	printf("\nMaior e Menor enrte n valores\n\n");
+}
+
+void lerQtd(int* quantidade){
+	printf("Quantos valores serão lidos:");
+	scanf("%d", quantidade);
+}
+
+void lerValores(int quantidade, int* valores){
+	for(int i = 0; i < quantidade, i++){
+		printf("digite o %d valor:", i + 1);
+		scanf("%d", valores);
+	}
+}
+
+int identificarMaior(int* valores, int quantidade){
+	int maior = valores[0];
+	
+	for(int i = 0; i < quantidade; i++){
+		if(valores[i] > maior){
+			maior = valores[i];
+		}
+	}
+
+	return maior;
+}
+
+int identificaSegundoMaior(int*valores, int quantidade){
+	int maior = valores[0];
+	int segundoMaior = valores[0];
+	
+	for(int i = 0; i < quantidade; i++){
+		if(valores[i] > maior){
+			segundoMaior = maior;
+			maior = valores[i];
+		}
+		else if(valores[i] < segundoMaior && valores[i] != maior){
+			segundoMaior = valores[i];
+		}
+
+	return segundoMaior;
+}
+
+int identificarMenor(int*valores, int quantidade){
+	int menor = valores[0];
+	
+	for(int i = 0; i < quantidade; i++){
+		if(valores[i] < menor){
+			menor = valores[i];
+	}
+	
+	return menor;
+}
+
+int identificarSegundoMenor(int*valores, int quantidade){
+	int menor = valores[0];
+	int segundoMenor = valores[0];
+	
+	for(int  i = 0; i < quantidade; i++){
+		if(valores[i] < menor){
+			segundoMenor = menor;
+			menor = valores[i];
+		}
+		else if(valores[i] < segundoMenor && valoes[i] != menor){
+			segundoMenor = valores[i];
+		}
+	}
+	
+	return segundoMaior;
+}
+
+int main(){
+	apresentacao();
+	
+	int quantidade;
+	lerValores(&quantidade);
+	
+	int* valores = (int*) malloc(termos * sizeof(int));
+    	if (valores == NULL){
+       		printf("Erro ao alocar memória.\n");
+       
+        	return 1;
+    	}
+
+	int menor = identificarMaior(valores, qunatidade);
+	int maior = identificarMenor(valores, qunatidade);
+	int segundoMenor = identificarSegundoMaior(valores, qunatidade);
+	int segundoMaior = identificarSegundoMenor(valores, qunatidade);
+	
+	
+	
+	printf("\nO maior valor e: %d\nO segundo maior e: %d", maior, segundoMaior);
+	printf("\nO menor valor e: %d\nO segundo menor e: %d", menor, segundoMenor);
+	
+	free(valores);
+
+
+	return 0;
+}

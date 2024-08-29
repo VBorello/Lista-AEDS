@@ -236,13 +236,13 @@ public:
     //método para imprimir dados de um professor
     void printProfessor() {
         printPessoa();
-        std::cout << "Titulação: " << titulacao << std::endl;
+        std::cout << "Titulacao: " << titulacao << std::endl;
     }
 
     // Método para escrever dados de um professor (nome, data de nascimento, titulação)
     void escrevaPessoa() override { //override modificar a implementação virtual de um método herdado.
         Pessoa::escrevaPessoa();
-        std::cout << "Titulação: " << titulacao << std::endl;
+        std::cout << "Titulacao: " << titulacao << std::endl;
     }
 };
 
@@ -265,6 +265,7 @@ void salvarDados(Pessoa *pessoas[], Aluno *alunos[], Professor *professores[]) {
     }
 
     //escreve os dados dos alunos no arquivo
+
     for (int i = 0; i < Aluno::getQtdAlunos(); ++i) {
         arquivo << "Aluno\n";
         arquivo << alunos[i] -> getNome() << "\n";
@@ -275,6 +276,7 @@ void salvarDados(Pessoa *pessoas[], Aluno *alunos[], Professor *professores[]) {
     }
 
     //escreve os dados dos professores no arquivo
+
     for (int i = 0; i < Professor::getQtdProfessores(); ++i) {
         arquivo << "Professor\n";
         arquivo << professores[i] -> getNome() << "\n";
@@ -560,8 +562,8 @@ int main() {
     try {
         menu(pessoas, alunos, professores);
     } catch (std::bad_alloc& e) {
-        std::cerr << "Erro de alocação de memória: " << e.what() << std::endl;
-        return 1; // Retorna um código de erro
+        std::cerr << "Erro de alocação de memoria: " << e.what() << std::endl;
+        return 1; //retorna um código de erro
     }
 
     //libera a memória alocada para cada objeto criado
