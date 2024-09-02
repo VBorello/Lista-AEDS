@@ -13,16 +13,12 @@ int main(){
     int primeiro = 0, resultado;
     int segundo = primeiro + 1;
 
+    printf("%d ", segundo);
     for(int i = 0; i < termos; i++){
         
-        if(i < 1){
-            resultado = 0;
-        }
-        else{
-            resultado = primeiro + segundo;
-            primeiro = segundo;
-            segundo = resultado;
-        }
+        resultado = primeiro + segundo;
+        primeiro = segundo;
+        segundo = resultado;
         
         printf("%d ", resultado);
     }
