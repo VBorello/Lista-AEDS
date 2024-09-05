@@ -6,20 +6,30 @@
 //– apenas ‘S’ para “sim” ou‘N’ para “não”.
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 
 void apresentacao(){
-    printf("\nVerificadro se X numeros são primos entre sí\n\n");
+    printf("\nPrimos entre sí\n\n");
 }
 
-void lerNumeros(int* x, int* y){
-    
-    bool erro;
-    do{
-        erro = (x = )
-        printf("Digite os numeros de maneira espaçada: ");
-        scanf("%d %d", x, y);
-    }while(erro);
-    
+int lerNumeros(int* n1, int* n2){
+    printf("Digite dois numeros: ");   
+    scanf("%d %d", n1, n2);
 }
+
+int mdc(int n1, int n2){
+    while (n2 != 0)
+    {
+        int aux = n2;
+        n2 = n1 % n2;
+        n1 = aux;
+    }
+
+    return n1;
+}
+
+int primosOuNao(int n1, int n2){
+    return mdc(&n1, &n2) == 1;
+}
+
