@@ -10,10 +10,6 @@ void apresentacao(int i){
     }
 }
 
-void teste(){
-    printf("Recursividade");
-}
-
 int main(){
     apresentacao(1);
 
