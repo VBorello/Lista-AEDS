@@ -33,14 +33,12 @@ int main() {
 
     apresentacao();
     
-    int n, t0, t1;
+    int n;
+    int t0 = 1;  
+    int t1 = 1;  
 
     printf("Digite o número de termos da sequência: ");
     scanf("%d", &n);
-    printf("Digite o primeiro termo (T0): ");
-    scanf("%d", &t0);
-    printf("Digite o segundo termo (T1): ");
-    scanf("%d", &t1);
 
     fetucciniSequence(n, t0, t1);
 

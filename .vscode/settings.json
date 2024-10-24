@@ -51,7 +51,8 @@
         "cstring": "cpp",
         "fstream": "cpp",
         "ctime": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "stdlib.h": "c"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/clang++"
 }
