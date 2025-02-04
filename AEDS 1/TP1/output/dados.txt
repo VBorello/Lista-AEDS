@@ -1,0 +1,8 @@
+Aluno
+Marcos
+22 5 2006
+885523
+Professor
+Lucio
+19 5 1990
+Bacharelado
