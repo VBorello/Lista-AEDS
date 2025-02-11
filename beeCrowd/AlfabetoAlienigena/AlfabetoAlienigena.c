@@ -6,17 +6,17 @@ void apresentacao(){
     printf("\nAlfabeto Alienigena\n\n");
 }
 
-void lerKeys(char* keys, int* Ktam){
+void lerKeys(char* keys, int* keyTam){
     printf("Digite as keys: ");
     scanf("%s", keys);  
 
-    *Ktam = 0; 
-    while (keys[*Ktam] != '\0'){  
-        (*Ktam)++;
+    *keyTam = 0; 
+    while (keys[*keyTam] != '\0'){  
+        (*keyTam)++;
     }
 }
 
-void lerFrase(char* frases, int* Ftam){
+void lerFrase(char* frases, int* fTam){
     char temp[100];
     printf("Digite a frase: ");
     fgets(temp, sizeof(temp), stdin);
@@ -29,14 +29,14 @@ void lerFrase(char* frases, int* Ftam){
         }
     }
     frases[j] = '\0';  
-    *Ftam = j;  
+    *fTam = j;  
 }
 
-void keysNaFrase(char* frases, char* keys, int Ftam, int Ktam){
+void keysNaFrase(char* frases, char* keys, int fTam, int keyTam){
     
     int iguais = 0;
-    for(int i = 0; i < Ktam; i++){
-        for(int j = 0; j < Ftam; j++){
+    for(int i = 0; i < keyTam; i++){
+        for(int j = 0; j < fTam; j++){
             if(keys[i] == frases[j]){  
                 iguais++;
             }
@@ -51,15 +51,15 @@ int main() {
 
     char keys[100];
     char frases[100];
-    int Ktam, Ftam;
+    int keyTam, fTam;
 
-    lerKeys(keys, &Ktam);
+    lerKeys(keys, &keyTam);
 
     while (getchar() != '\n'); 
     
-    lerFrase(frases, &Ftam);
+    lerFrase(frases, &fTam);
 
-    keysNaFrase(frases, keys, Ftam, Ktam);
+    keysNaFrase(frases, keys, fTam, keyTam);
 
     return 0;
 }
