@@ -5,14 +5,7 @@ public class maiorEmenorArrayLessCompare{
 
 	public static void main(String[] args){
 
-		Scanner sc = new Scanner(System.in);
-		int tam = 6;
-		int []array = new int[tam];
-
-		for(int i = 0; i < tam; i++){
-			array[i] = sc.nextInt();
-			sc.nextLine();
-		}
+		int []array = {1,10,-2,11,-3,12,-4,13};
 
 		if(array.length == 0){
 			System.out.println("O array ta vazio");
