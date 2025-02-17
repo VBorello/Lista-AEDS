@@ -19,10 +19,15 @@ public class inverterString{
         Scanner scanner = new Scanner(System.in);
         String palavra = scanner.nextLine();
 
-        String palvaraInvertida = inverterString(palavra);
 
-        System.out.println("\ninvertida: " + palvaraInvertida);
+        while(!(palavra.length() ==  3 && palavra.charAt(0) == 'F' && palavra.charAt(1) == 'I' && palavra.charAt(2) == 'M')){
 
+            String palvaraInvertida = inverterString(palavra);
+            System.out.println(palvaraInvertida);
+            
+            palavra = scanner.nextLine();
+        }
+        
         scanner.close();
     }
 }

@@ -1,6 +1,7 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class Palindromo{
+
     public static boolean palindromo(String string) {
         
         boolean palindromo = true;
@@ -18,14 +19,21 @@ public class Palindromo{
     }
 
     public static void main(String[] args){
+        
         Scanner scanner = new Scanner(System.in);
         String entrada = scanner.nextLine();
         
-        while (!entrada.equals("FIM")){
-            System.out.println(palindromo(entrada) ? "SIM" : "NAO");
+        while(!(entrada.length() == 3 && entrada.charAt(0) == 'F' && entrada.charAt(1) == 'I' && entrada.charAt(2) == 'M')){
+
+            if(palindromo(entrada)){
+                System.out.println("SIM");  
+            }
+            else{
+                System.out.println("NAO");
+            }
             entrada = scanner.nextLine();
         }
-        
+
         scanner.close();
     }
 }

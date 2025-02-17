@@ -20,10 +20,12 @@ bool palindromo(char* string){
 
 int main(){
     
-    char string[100];
+    char string[5000];
 
     scanf(" %[^\n\r]", string);
+
     while (strcmp(string, "FIM")){
+        
         if(palindromo(string)){
             printf("SIM\n");
         }
