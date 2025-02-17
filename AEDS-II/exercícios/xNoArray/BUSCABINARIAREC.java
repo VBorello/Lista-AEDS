@@ -18,7 +18,7 @@ public class BUSCABINARIAREC{
 		if(array[meio] == x){
 			return true;
 		}
-		else if(array[meio] < esquerda){
+		else if(array[meio] < x){
 		
 			return buscaBinariaRec(array, x, meio + 1, direita);
 		}
@@ -36,7 +36,7 @@ public class BUSCABINARIAREC{
 		int x = scanner.nextInt();
 	
 		boolean resposta = conferir(array, x);
-		System.out.println("O valor: " + x + "esta no array? " + resposta);
+		System.out.println("O valor: " + x + " esta no array? " + resposta);
 		
 		System.out.print("\nArray:");
 		for(int n : array){
