@@ -20,7 +20,7 @@ bool palindromo(char* string){
 
 int main(){
     
-    char string[5000];
+    char string[1000];
 
     scanf(" %[^\n\r]", string);
 
