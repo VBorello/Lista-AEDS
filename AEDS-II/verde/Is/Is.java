@@ -90,15 +90,31 @@ public class Is{
             palavra.charAt(1) == 'I' &&
             palavra.charAt(2) == 'M')) {
 
-                if(isApenasVogais(palavra)) x1 = sim;
-                else x1 = nao;
-                if(isApenasConso(palavra)) x2 = sim;
-                else x2 = nao;
-                if(isInteiro(palavra)) x3 = sim;
-                else x3 = nao;
-                if(isReal(palavra)) x4 = sim;
-                else x4 = nao;
-            
+                if(isApenasVogais(palavra)){
+                    x1 = sim;
+                } 
+                else{
+                    x1 = nao;
+                } 
+                if(isApenasConso(palavra)){
+                    x2 = sim;
+                } 
+                else{
+                     x2 = nao;
+                }
+                if(isInteiro(palavra)){
+                     x3 = sim;
+                }
+                else{
+                     x3 = nao;
+                }
+                if(isReal(palavra)){
+                     x4 = sim;
+                }
+                else{
+                     x4 = nao;
+                }
+                
             System.out.println(x1 + " " + x2 + " " + x3 + " " + x4);
             palavra = scanner.nextLine();
         }
