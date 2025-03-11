@@ -1,44 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
+#include <stdbool.h>
 
-bool palindromoRec(char* string, int indice, int tam){
-
-    if (indice >= tam) {
-        return true;
-    }
-
+bool palindromoRec(char* string, int index, bool palindromo) {
     
-    if(string[indice] != string[tam]){
-        return false;
+    int tam = strlen(string);
+
+    if (index < tam / 2) {
+        if(string[index] != string[tam - 1 - index]){
+     
+            palindromo = false;
+        }   
+    }
+    else if (index >= tam) {
+        return palindromo;
     }
 
-    return palindromoRec(string, indice + 1, tam - 1);
-
+    return palindromoRec(string, index + 1, palindromo);
 }
 
-int main(){
+int main() {
 
     char string[1000];
     scanf(" %[^\n\r]", string);
 
-    int tam = strlen(string) - 1;
-
-    while(strcmp(string, "FIM")){
-        if(palindromoRec(string, 0, tam)){
+    bool palindromo = true;
+    
+    while (strcmp(string, "FIM")) {
+        
+        if (palindromoRec(string, 0, palindromo)) {
             printf("SIM\n");       
-        }
-        else{
+        } else {
             printf("NÃO\n");
         }
-
+        
         scanf(" %[^\n\r]", string);
     }
-
     
-    
-    getchar();
-
     return 0;
 }

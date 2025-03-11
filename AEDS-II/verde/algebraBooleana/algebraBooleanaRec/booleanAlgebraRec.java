@@ -1,134 +1,189 @@
-import java.util.*;
+import java.util.Scanner;
 
-public class booleanAlgebraRec {
+public class booleanAlgebraRec{
 
-    // Substitui as variáveis A, B, C pelos respectivos valores binários
-    public static String trocaBinaria(int[] binarios, String booleana) {
-        StringBuilder troca = new StringBuilder();
-        for (int i = 0; i < booleana.length(); i++) {
-            char c = booleana.charAt(i);
-            if (c != ' ') {
-                if (c == 'A') {
-                    troca.append(binarios[0]);
-                } else if (c == 'B') {
-                    troca.append(binarios[1]);
-                } else if (c == 'C') {
-                    troca.append(binarios[2]);
-                } else {
-                    troca.append(c);
+    public static String trocaBinaria(int[] binarios, String booleana, String troca, int index){
+
+        if (index < booleana.length()){
+            if (booleana.charAt(index) != ' '){
+                if (booleana.charAt(index) == 'A'){
+
+                    troca += binarios[0]; 
+                }
+                else if (booleana.charAt(index) == 'B'){
+
+                    troca += binarios[1]; 
+                }
+                else if (booleana.charAt(index) == 'C'){
+
+                    troca += binarios[2]; 
+                }
+                else{
+
+                    troca += booleana.charAt(index); 
                 }
             }
+
+            troca = trocaBinaria(binarios, booleana, troca, index + 1);
         }
-        return troca.toString();
+
+        return troca;
     }
 
-    // Função recursiva para avaliar a expressão booleana
-    // Utilizamos um array de um elemento para simular passagem por referência do índice
-    public static char evaluate(String s, int[] index) {
-        // Pula espaços (caso existam)
-        while (index[0] < s.length() && s.charAt(index[0]) == ' ') {
-            index[0]++;
-        }
-        // Se o caractere atual for um dígito, retorna-o
-        char current = s.charAt(index[0]);
-        if (current == '0' || current == '1') {
-            index[0]++;
-            return current;
+    public static String NOT(String booleana, String not, int index){
+
+        if (index < booleana.length()){
+            if (booleana.charAt(index) == 'n' && (booleana.charAt(index + 4) == '1' ||
+                booleana.charAt(index + 4) == '0')){
+
+                not += booleana.charAt(index + 4) == '1' ? 0 : 1; 
+
+                index += 5;
+            }
+            else{
+
+                not += booleana.charAt(index);
+            }
+
+            not = NOT(booleana, not, index + 1);
         }
 
-        // Caso contrário, espera-se um operador (not, and ou or)
-        // Lê o nome do operador até encontrar um caractere não alfabético
-        int start = index[0];
-        while (index[0] < s.length() && Character.isLetter(s.charAt(index[0]))) {
-            index[0]++;
-        }
-        String op = s.substring(start, index[0]);
+        return not;
+    }
 
-        // Avança até encontrar o parêntese de abertura '(' e pula-o
-        while (index[0] < s.length() && s.charAt(index[0]) != '(') {
-            index[0]++;
-        }
-        index[0]++; // pula '('
+    public static String AND(String booleana, String and, int index){
 
-        if (op.equals("not")) {
-            // Avalia o único argumento da operação not
-            char arg = evaluate(s, index);
-            // Pula até o parêntese de fechamento ')'
-            while (index[0] < s.length() && s.charAt(index[0]) != ')') {
-                index[0]++;
-            }
-            index[0]++; // pula ')'
-            return arg == '1' ? '0' : '1';
-        } else if (op.equals("and")) {
-            // Lê os argumentos separados por vírgula
-            List<Character> args = new ArrayList<>();
-            args.add(evaluate(s, index));
-            while (index[0] < s.length() && s.charAt(index[0]) == ',') {
-                index[0]++; // pula a vírgula
-                args.add(evaluate(s, index));
-            }
-            // Pula o parêntese de fechamento
-            if (index[0] < s.length() && s.charAt(index[0]) == ')') {
-                index[0]++;
-            }
-            // Operação AND: se algum argumento for '0', o resultado é '0'
-            for (char val : args) {
-                if (val == '0') {
-                    return '0';
+        if (index < booleana.length()){
+            if (booleana.charAt(index) == 'a' && (booleana.charAt(index + 4) == '1' ||
+                booleana.charAt(index + 4) == '0') && (booleana.charAt(index + 6) == '1' ||
+                booleana.charAt(index + 6) == '0')){
+
+                if(booleana.charAt(index + 7) == ')'){
+
+                    and += (booleana.charAt(index + 4) == '1' && booleana.charAt(index + 6) == '1') ? 1 : 0;
+
+                    index += 7; //passa essa operacao
+                }
+                else if (booleana.charAt(index + 9) == ')'){
+
+                    and += (booleana.charAt(index + 4) == '1' && booleana.charAt(index + 6) == '1' &&
+                    booleana.charAt(index + 8) == '1') ? 1 : 0; 
+                    
+                    index += 9; 
+                }
+                else if (booleana.charAt(index + 11) == ')'){
+
+                    and += (booleana.charAt(index + 4) == '1' && booleana.charAt(index + 6) == '1' &&
+                    booleana.charAt(index + 8) == '1' && booleana.charAt(index + 10) == '1') ? 1 : 0;
+
+                    index += 11; 
+                }
+                else{
+
+                    and += booleana.charAt(index);
                 }
             }
-            return '1';
-        } else if (op.equals("or")) {
-            // Lê os argumentos separados por vírgula
-            List<Character> args = new ArrayList<>();
-            args.add(evaluate(s, index));
-            while (index[0] < s.length() && s.charAt(index[0]) == ',') {
-                index[0]++;
-                args.add(evaluate(s, index));
+            else{
+
+                and += booleana.charAt(index);
             }
-            // Pula o parêntese de fechamento
-            if (index[0] < s.length() && s.charAt(index[0]) == ')') {
-                index[0]++;
-            }
-            // Operação OR: se algum argumento for '1', o resultado é '1'
-            for (char val : args) {
-                if (val == '1') {
-                    return '1';
+            
+            and = AND(booleana, and, index + 1);
+        }
+        
+        return and;
+    }
+
+    public static String OR(String booleana, String or, int index){
+
+        if (index < booleana.length()){
+            if (booleana.charAt(index) == 'o' && booleana.charAt(index + 1) == 'r' &&
+                (booleana.charAt(index + 3) == '1' || booleana.charAt(index + 3) == '0') &&
+                (booleana.charAt(index + 5) == '1' || booleana.charAt(index + 5) == '0')){
+                
+                if (booleana.charAt(index + 6) == ')'){
+                    or += (booleana.charAt(index + 3) == '1' || booleana.charAt(index + 5) == '1') ? 1 : 0;
+                    
+                    index += 6;
+                }
+                else if (booleana.charAt(index + 8) == ')'){
+                    or += (booleana.charAt(index + 3) == '1' ||
+                    booleana.charAt(index + 5) == '1' || booleana.charAt(index + 7) == '1') ? 1 : 0;
+                    
+                    index += 8; 
+                }
+                else if (booleana.charAt(index + 10) == ')'){
+
+                    or += (booleana.charAt(index + 3) == '1' ||
+                    booleana.charAt(index + 5) == '1' || booleana.charAt(index + 7) == '1' ||
+                    booleana.charAt(index + 9) == '1') ? 1 : 0;
+
+                    index += 10;
                 }
             }
-            return '0';
+            else{
+
+                or += booleana.charAt(index);
+            }
+
+            or = OR(booleana, or, index + 1);
         }
-        // Caso não corresponda a nenhum operador esperado, retorna '0' por segurança
-        return '0';
+        
+        return or;
     }
 
-    // Função que inicia a avaliação recursiva a partir do índice zero
-    public static String evaluateExpression(String expr) {
-        int[] index = {0};
-        char result = evaluate(expr, index);
-        return Character.toString(result);
+    public static String contaParenteses(String booleana, int operacao){
+        
+        int tam = booleana.length() - 1;
+        String funcao = "";
+    
+        if (operacao == tam){
+          
+          funcao = booleana;
+        }
+        else if (booleana.charAt(operacao) == 'n'){
+        
+            funcao = NOT(contaParenteses(booleana, operacao + 4), "", 0);
+        }
+        else if (booleana.charAt(operacao) == 'a'){
+            
+            funcao = AND(contaParenteses(booleana, operacao + 4), "", 0);
+        }
+        else if (booleana.charAt(operacao) == 'o'){
+            
+            funcao = OR(contaParenteses(booleana, operacao + 3), "", 0);
+        }
+        else{
+            funcao = contaParenteses(booleana, ++operacao);
+        }
+
+        return funcao;
+        
     }
 
-    public static void main(String[] args) {
+    public static void main (String[] args){
+
         Scanner scanner = new Scanner(System.in);
         
-        int qtdValores = scanner.nextInt();
-        while (qtdValores != 0) {
-            int[] binarios = new int[3];
-            for (int i = 0; i < qtdValores; i++) {
+        int qtdB = scanner.nextInt();
+        
+        String booleana;
+        int[] binarios = new int[3];
+
+        while(qtdB != 0){
+            for(int i = 0 ; i < qtdB ; i++){
                 binarios[i] = scanner.nextInt();
             }
-            scanner.nextLine(); // consome a quebra de linha
-            String booleana = scanner.nextLine();
+
+            booleana = scanner.nextLine();
+
+            booleana = trocaBinaria(binarios, booleana, "", 0);
             
-            // Substitui as variáveis pelos valores binários
-            booleana = trocaBinaria(binarios, booleana);
-            // Avalia a expressão booleana de forma recursiva
-            String result = evaluateExpression(booleana);
-            
-            System.out.println(result);
-            
-            qtdValores = scanner.nextInt();
+            booleana = contaParenteses(booleana, 0);
+
+            System.out.println(booleana);
+
+            qtdB = scanner.nextInt();
         }
         scanner.close();
     }

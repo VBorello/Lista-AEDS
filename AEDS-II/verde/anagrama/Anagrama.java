@@ -1,26 +1,26 @@
-import java.util.*;
+import java.util.Scanner;
 
 public class Anagrama{
+    
+    public static boolean anagrama(String string1, String string2){
 
-    public static boolean anagrama(String p1, String p2){
+        string1 = string1.toLowerCase();
+        string2 = string2.toLowerCase();
 
-        if(p1.length() != p2.length()){
+        if (string1.length() != string2.length()){
             return false;
         }
 
-        //usando um array para contar a ocorrência dos caracteres
-        int[] qtdCaracteres = new int[256];//256 tabela ascii
+        int[] letras = new int[Character.MAX_VALUE + 1];
 
-        for(int i = 0; i < p1.length(); i++){
-            qtdCaracteres[p1.charAt(i)]++;
+        for (int i = 0; i < string1.length(); i++){
+            letras[string1.charAt(i)]++; 
+            letras[string2.charAt(i)]--; 
         }
 
-        //subtraindo a contagem dos caracteres da segunda string
-        for(int i = 0; i < p2.length(); i++){
-            //se algum caractere aparecer mais vezes na segunda string, não é anagrama
-            qtdCaracteres[p2.charAt(i)]--; 
-            if(qtdCaracteres[p2.charAt(i)] < 0){
-                return  false;
+        for (int i = 0; i < 256; i++){
+            if (letras[i] != 0){
+                return false;
             }
         }
 
@@ -29,28 +29,28 @@ public class Anagrama{
 
     public static void main(String[] args){
 
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
-        scanner.nextLine();
+        Scanner scanner = new Scanner(System.in, "UTF-8");
 
-        for(int i = 0; i < n; i++){
-            
-            String line = scanner.nextLine();
-            
-            String[] parts = line.split(" ");
+        String entrada = scanner.nextLine();
 
-            String p1 = parts[0];
-            String p2 = parts[1];
 
-            if(anagrama(p1, p2)){
-                System.out.println("SIM");
+        while(!(entrada.length() == 3 && entrada.charAt(0) == 'F' && entrada.charAt(1) == 'I' && entrada.charAt(2) == 'M')){
+
+            String[] partes = entrada.split(" - ");
+            if(partes.length == 2){
+                String string1 = partes[0];
+                String string2 = partes[1];
+
+                if (anagrama(string1, string2)){
+                    System.out.println("SIM");
+                }
+                else{
+                    System.out.println("NÃO");
+                }
             }
-            else{
-                System.out.println("NÃO");
-            }
+            entrada = scanner.nextLine();
         }
 
         scanner.close();
     }
-
 }
