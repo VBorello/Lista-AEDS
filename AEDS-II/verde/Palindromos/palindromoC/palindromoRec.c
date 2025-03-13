@@ -32,7 +32,7 @@ int main() {
         if (palindromoRec(string, 0, palindromo)) {
             printf("SIM\n");       
         } else {
-            printf("NÃO\n");
+            printf("NAO\n");
         }
         
         scanf(" %[^\n\r]", string);

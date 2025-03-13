@@ -1,34 +1,47 @@
 import java.util.*;
 
-public class SubString{
+public class SubString {
 
-    public static String contarRepeticoes(String string){
+    public static int contarRepeticoes(String string){
 
-        int qtdDif = 0;
+        boolean[] unicas = new boolean[256];//tabela ASCII
+        int qtdDif = 0;//quantidade de caracteres diferentes
+        int tamMaiorSubstring = 0;//maior subString de caracteres diferentes
 
-        for(int i = 0; i < string.length(); i++){
+        for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
 
-            String diferentes[];
+            if (!unicas[c]){
+                unicas[c] = true;
+                qtdDif++;
 
-            c = diferentes[i];
-            qtdDif++;
-            if(c == diferentes[i - 1]){
-                qtdDif--;
+                //atualiza tamMaiorSubstring manualmente
+                if (qtdDif > tamMaiorSubstring){
+
+                    tamMaiorSubstring = qtdDif;
+                }
+            } 
+            else{
+
+                i = i - qtdDif;
+                qtdDif = 0;
+                unicas = new boolean[256];
             }
         }
-    
-        return qtdDif;
+
+        return tamMaiorSubstring;
     }
 
     public static void main(String[] args){
 
-        Scanner scanner = new Scanner(Sytem.in);
+        Scanner scanner = new Scanner(System.in);
         String string = scanner.nextLine();
 
-        if(!(string.length() == 3 && string.charAt(0) == 'F' && string.charAt(1) == 'I' && string.charAt(2) == 'M')){
-            
+        while (!(string.length() == 3 && string.charAt(0) == 'F' && string.charAt(1) == 'I' && string.charAt(2) == 'M')){
+            System.out.println(contarRepeticoes(string));
+            string = scanner.nextLine();
         }
-    }
 
+        scanner.close();
+    }
 }
