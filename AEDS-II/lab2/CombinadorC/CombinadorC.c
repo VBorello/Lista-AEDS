@@ -5,24 +5,24 @@
 char* combinar(const char* string1, const char* string2){
     
     static char combinada[1000];
-    int iStr1 = 0;
-    int iStr2 = 0;
-    int iCombinada = 0;
+    int tamString1 = 0;
+    int tamString2 = 0;
+    int tamCombinada = 0;
 
-    while(string1[iStr1] != '\0' && string2[iStr2] != '\0'){
-        combinada[iCombinada++] = string1[iStr1++];
-        combinada[iCombinada++] = string2[iStr2++];
+    while(string1[tamString1] != '\0' && string2[tamString2] != '\0'){
+        combinada[tamCombinada++] = string1[tamString1++];
+        combinada[tamCombinada++] = string2[tamString2++];
     }
 
-    while(string1[iStr1] != '\0'){
-        combinada[iCombinada++] = string1[iStr1++];
+    while(string1[tamString1] != '\0'){
+        combinada[tamCombinada++] = string1[tamString1++];
     }
 
-    while(string2[iStr2] != '\0'){
-        combinada[iCombinada++] = string2[iStr2++];
+    while(string2[tamString2] != '\0'){
+        combinada[tamCombinada++] = string2[tamString2++];
     }
     
-    combinada[iCombinada] = '\0';
+    combinada[tamCombinada] = '\0';
 
     return combinada;
 }
