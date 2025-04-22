@@ -150,12 +150,13 @@ public class Show{
 
     //Ler
     public static Show[] ler(String path){
+     
         Show[] shows = new Show[5000];
-        int count = 0;
+        int qtd = 0;
 
         try{
             BufferedReader br = new BufferedReader(new FileReader(path));
-            String header = br.readLine(); //ignora cabeçalho
+            String header = br.readLine();
             String linha;
 
             while ((linha = br.readLine()) != null){
@@ -185,7 +186,7 @@ public class Show{
                 int year = -1;
                 try{ year = Integer.parseInt(campos[7]); } catch (Exception ignored){}
 
-                shows[count++] = new Show(
+                shows[qtd++] = new Show(
                         campos[0], campos[1], campos[2],
                         dir, cast,
                         campos[5],
@@ -202,8 +203,8 @@ public class Show{
             e.printStackTrace();
         }
 
-        Show[] finalShows = new Show[count];
-        for (int i = 0; i < count; i++){
+        Show[] finalShows = new Show[qtd];
+        for (int i = 0; i < qtd; i++){
             finalShows[i] = shows[i];
         }
         return finalShows;

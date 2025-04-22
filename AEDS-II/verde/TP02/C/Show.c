@@ -82,24 +82,24 @@ int LER_LINHA(char *linha, Show *s){
 
     if (index_campos < 11) return 0;
 
-    s->SHOW_ID = campos[0];
-    s->TYPE = campos[1];
-    s->TITLE = campos[2];
+    s -> SHOW_ID = campos[0];
+    s -> TYPE = campos[1];
+    s -> TITLE = campos[2];
 
-    s->DIRECTOR = split_lista(campos[3], &s->DIRECTOR_COUNT);
-    ordenar_lista(s->DIRECTOR, s->DIRECTOR_COUNT);
+    s -> DIRECTOR = split_lista(campos[3], &s -> DIRECTOR_COUNT);
+    ordenar_lista(s -> DIRECTOR, s -> DIRECTOR_COUNT);
 
-    s->CAST = split_lista(campos[4], &s->CAST_COUNT);
-    ordenar_lista(s->CAST, s->CAST_COUNT);
+    s -> CAST = split_lista(campos[4], &s -> CAST_COUNT);
+    ordenar_lista(s -> CAST, s -> CAST_COUNT);
 
-    s->COUNTRY = campos[5];
-    s->DATE_ADDED = campos[6];
-    s->RELEASE_YEAR = atoi(campos[7]);
-    s->RATING = campos[8];
-    s->DURATION = campos[9];
+    s -> COUNTRY = campos[5];
+    s -> DATE_ADDED = campos[6];
+    s -> RELEASE_YEAR = atoi(campos[7]);
+    s -> RATING = campos[8];
+    s -> DURATION = campos[9];
 
-    s->LISTED_IN = split_lista(campos[10], &s->LISTED_COUNT);
-    ordenar_lista(s->LISTED_IN, s->LISTED_COUNT);
+    s -> LISTED_IN = split_lista(campos[10], &s -> LISTED_COUNT);
+    ordenar_lista(s -> LISTED_IN, s -> LISTED_COUNT);
 
     return 1;
 }
@@ -116,19 +116,19 @@ void print_lista(char **lista, int qtd){
 }
 
 void print_show(Show *s){
-    printf("=> %s ## %s ## %s ## ", s->SHOW_ID, s->TITLE, s->TYPE);
-    print_lista(s->DIRECTOR, s->DIRECTOR_COUNT);
+    printf("=> %s ## %s ## %s ## ", s -> SHOW_ID, s -> TITLE, s -> TYPE);
+    print_lista(s -> DIRECTOR, s -> DIRECTOR_COUNT);
     printf(" ## [");
-    print_lista(s->CAST, s->CAST_COUNT);
-    printf("] ## %s ## %s ## ", s->COUNTRY, s->DATE_ADDED);
+    print_lista(s -> CAST, s -> CAST_COUNT);
+    printf("] ## %s ## %s ## ", s -> COUNTRY, s -> DATE_ADDED);
 
-    if (s->RELEASE_YEAR != -1)
-        printf("%d ## ", s->RELEASE_YEAR);
+    if (s -> RELEASE_YEAR != -1)
+        printf("%d ## ", s -> RELEASE_YEAR);
     else
         printf("NaN ## ");
 
-    printf("%s ## %s ## [", s->RATING, s->DURATION);
-    print_lista(s->LISTED_IN, s->LISTED_COUNT);
+    printf("%s ## %s ## [", s -> RATING, s -> DURATION);
+    print_lista(s -> LISTED_IN, s -> LISTED_COUNT);
     printf("] ##\n");
 }
 
