@@ -18,7 +18,6 @@ public class Show{
     private String DURATION;
     private String[] LISTED_IN;
 
-    //construtor vazio
     public Show(){
         this.SHOW_ID = "NaN";
         this.TYPE = "NaN";
@@ -33,7 +32,6 @@ public class Show{
         this.LISTED_IN = new String[0];
     }
 
-    //construtore parametrizado
     public Show(String SHOW_ID, String TYPE, String TITLE, String[] DIRECTOR, String[] CAST,
                 String COUNTRY, String DATE_ADDED, int RELEASE_YEAR, String RATING, String DURATION, String[] LISTED_IN){
         this.SHOW_ID = SHOW_ID;
@@ -49,83 +47,10 @@ public class Show{
         this.LISTED_IN = LISTED_IN;
     }
 
-    //setts
-    public void setSHOW_ID(String SHOW_ID){
-         this.SHOW_ID = SHOW_ID;
-    }
-    public void setTYPE(String TYPE){
-         this.TYPE = TYPE;
-    }
-    public void setTITLE(String TITLE){
-         this.TITLE = TITLE;
-    }
-    public void setDIRECTOR(String[] DIRECTOR){
-         this.DIRECTOR = DIRECTOR;
-    }
-    public void setCAST(String[] CAST){
-         this.CAST = CAST;
-    }
-    public void setCOUNTRY(String COUNTRY){
-         this.COUNTRY = COUNTRY;
-    }
-    public void setDATE_ADDED(String DATE_ADDED){
-         this.DATE_ADDED = DATE_ADDED;
-    }
-    public void setRELEASE_YEAR(int RELEASE_YEAR){
-         this.RELEASE_YEAR = RELEASE_YEAR;
-    }
-    public void setRATING(String RATING){
-         this.RATING = RATING;
-    }
-    public void setDURATION(String DURATION){
-         this.DURATION = DURATION;
-    }
-    public void setLISTED_IN(String[] LISTED_IN){
-         this.LISTED_IN = LISTED_IN;
-    }
-
-    //getts
     public String getSHOW_ID(){
-         return this.SHOW_ID;
-    }
-    public String getTYPE(){
-         return this.TYPE;
-    }
-    public String getTITLE(){
-         return this.TITLE;
-    }
-    public String[] getDIRECTOR(){
-         return this.DIRECTOR;
-    }
-    public String[] getCAST(){
-         return this.CAST;
-    }
-    public String getCOUNTRY(){
-         return this.COUNTRY;
-    }
-    public String getDATE_ADDED(){
-         return this.DATE_ADDED;
-    }
-    public int getRELEASE_YEAR(){
-         return this.RELEASE_YEAR;
-    }
-    public String getRATING(){
-         return this.RATING;
-    }
-    public String getDURATION(){
-         return this.DURATION;
-    }
-    public String[] getLISTED_IN(){
-         return this.LISTED_IN;
+        return this.SHOW_ID;
     }
 
-    //clone
-    public Show clone(){
-        return new Show(SHOW_ID, TYPE, TITLE, DIRECTOR.clone(), CAST.clone(), COUNTRY,
-                DATE_ADDED, RELEASE_YEAR, RATING, DURATION, LISTED_IN.clone());
-    }
-
-    //Print formatado
     public void print(){
         Arrays.sort(DIRECTOR);
         Arrays.sort(CAST);
@@ -148,85 +73,69 @@ public class Show{
                 "[" + listedInStr + "] ##");
     }
 
-    //Ler
-    public static Show[] ler(String path){
-     
-        Show[] shows = new Show[5000];
-        int qtd = 0;
+    public static Show parseLinha(String linha){
+        String[] campos = new String[12];
+        int index = 0;
+        boolean dentroAspas = false;
+        StringBuilder sb = new StringBuilder();
 
-        try{
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            String header = br.readLine();
-            String linha;
+        for (int i = 0; i < linha.length(); i++){
+            char c = linha.charAt(i);
 
-            while ((linha = br.readLine()) != null){
-                String[] campos = new String[12];
-                int index = 0;
-                boolean dentroAspas = false;
-                StringBuilder sb = new StringBuilder();
-
-                for (int i = 0; i < linha.length(); i++){
-                    char c = linha.charAt(i);
-
-                    if (c == '"'){
-                        dentroAspas = !dentroAspas;
-                    } else if (c == ',' && !dentroAspas){
-                        campos[index++] = sb.toString().trim();
-                        sb.setLength(0);
-                    } else{
-                        sb.append(c);
-                    }
-                }
-                campos[index] = sb.toString().trim();
-
-                String[] dir = campos[3] != null && !campos[3].isEmpty() ? campos[3].split(", ") : new String[0];
-                String[] cast = campos[4] != null && !campos[4].isEmpty() ? campos[4].split(", ") : new String[0];
-                String[] listed = campos[10] != null && !campos[10].isEmpty() ? campos[10].split(", ") : new String[0];
-
-                int year = -1;
-                try{ year = Integer.parseInt(campos[7]); } catch (Exception ignored){}
-
-                shows[qtd++] = new Show(
-                        campos[0], campos[1], campos[2],
-                        dir, cast,
-                        campos[5],
-                        campos[6],
-                        year,
-                        campos[8],
-                        campos[9],
-                        listed
-                );
+            if (c == '"'){
+                dentroAspas = !dentroAspas;
+            } else if (c == ',' && !dentroAspas){
+                campos[index++] = sb.toString().trim();
+                sb.setLength(0);
+            } else{
+                sb.append(c);
             }
-
-            br.close();
-        } catch (Exception e){
-            e.printStackTrace();
         }
+        campos[index] = sb.toString().trim();
 
-        Show[] finalShows = new Show[qtd];
-        for (int i = 0; i < qtd; i++){
-            finalShows[i] = shows[i];
-        }
-        return finalShows;
+        String[] dir = campos[3] != null && !campos[3].isEmpty() ? campos[3].split(", ") : new String[0];
+        String[] cast = campos[4] != null && !campos[4].isEmpty() ? campos[4].split(", ") : new String[0];
+        String[] listed = campos[10] != null && !campos[10].isEmpty() ? campos[10].split(", ") : new String[0];
+
+        int year = -1;
+        try{ year = Integer.parseInt(campos[7]); } catch (Exception ignored){}
+
+        return new Show(
+                campos[0], campos[1], campos[2],
+                dir, cast,
+                campos[5],
+                campos[6],
+                year,
+                campos[8],
+                campos[9],
+                listed
+        );
     }
 
-    //main
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        Show[] shows = ler("/tmp/disneyplus.csv");
-        ///home/vicenzo/Documentos/GitHub/Lista-AEDS/AEDS-II/verde/TP02/disneyplus.csv
-
-
         String entrada = sc.nextLine();
+
         while (!entrada.equals("FIM")){
             boolean encontrado = false;
-            for (int i = 0; i < shows.length; i++){
-                if (shows[i].getSHOW_ID().equals(entrada)){
-                    shows[i].print();
-                    encontrado = true;
-                    break;
+
+            try (BufferedReader br = new BufferedReader(new FileReader("/home/vicenzo/Documentos/GitHub/Lista-AEDS/AEDS-II/verde/TP02/disneyplus.csv"))){
+                br.readLine(); // pular cabeçalho
+                String linha;
+
+                while ((linha = br.readLine()) != null){
+                    Show show = parseLinha(linha);
+
+                    if (show.getSHOW_ID().equals(entrada)){
+                        show.print();
+                        encontrado = true;
+                        break;
+                    }
                 }
+            } catch (IOException e){
+                e.printStackTrace();
             }
+
             if (!encontrado){
                 System.out.println("Show não encontrado.");
             }
