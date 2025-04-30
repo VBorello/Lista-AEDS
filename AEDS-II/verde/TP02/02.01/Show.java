@@ -47,11 +47,100 @@ public class Show{
         this.LISTED_IN = LISTED_IN;
     }
 
+    //getts
     public String getSHOW_ID(){
         return this.SHOW_ID;
     }
 
+    public String getTYPE(){
+        return this.TYPE;
+    }
+
+    public String getTITLE(){
+        return this.TITLE;
+    }
+
+    public String[] getDIRECTOR(){
+        return this.DIRECTOR;
+    }
+
+    public String[] getCAST(){
+        return this.CAST;
+    }
+
+    public String getCOUNTRY(){
+        return this.COUNTRY;
+    }
+
+    public String getDATE_ADDED(){
+        return this.DATE_ADDED;
+    }
+
+    public int getRELEASE_YEAR(){
+        return this.RELEASE_YEAR;
+    }
+
+    public String getRATING(){
+        return this.RATING;
+    }
+
+    public String getDURATION(){
+        return this.DURATION;
+    }
+
+    public String[] getLISTED_IN(){
+        return this.LISTED_IN;
+    }
+
+    //setts
+    public void setSHOW_ID(String SHOW_ID){
+        this.SHOW_ID = SHOW_ID;
+    }
+
+    public void setTYPE(String TYPE){
+        this.TYPE = TYPE;
+    }
+
+    public void setTITLE(String TITLE){
+        this.TITLE = TITLE;
+    }
+
+    public void setDIRECTOR(String[] DIRECTOR){
+        this.DIRECTOR = DIRECTOR;
+    }
+
+    public void setCAST(String[] CAST){
+        this.CAST = CAST;
+    }
+
+    public void setCOUNTRY(String COUNTRY){
+        this.COUNTRY = COUNTRY;
+    }
+
+    public void setDATE_ADDED(String DATE_ADDED){
+        this.DATE_ADDED = DATE_ADDED;
+    }
+
+    public void setRELEASE_YEAR(int RELEASE_YEAR){
+        this.RELEASE_YEAR = RELEASE_YEAR;
+    }
+
+    public void setRATING(String RATING){
+        this.RATING = RATING;
+    }
+
+    public void setDURATION(String DURATION){
+        this.DURATION = DURATION;
+    }
+
+    public void setLISTED_IN(String[] LISTED_IN){
+        this.LISTED_IN = LISTED_IN;
+    }
+
+    //print
     public void print(){
+
+        //ordenação
         Arrays.sort(DIRECTOR);
         Arrays.sort(CAST);
         Arrays.sort(LISTED_IN);
@@ -73,21 +162,25 @@ public class Show{
                 "[" + listedInStr + "] ##");
     }
 
+    //ler
     public static Show parseLinha(String linha){
+
         String[] campos = new String[12];
         int index = 0;
         boolean dentroAspas = false;
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < linha.length(); i++){
+        for(int i = 0; i < linha.length(); i++){
             char c = linha.charAt(i);
 
-            if (c == '"'){
+            if(c == '"'){
                 dentroAspas = !dentroAspas;
-            } else if (c == ',' && !dentroAspas){
+            } 
+            else if(c == ',' && !dentroAspas){
                 campos[index++] = sb.toString().trim();
                 sb.setLength(0);
-            } else{
+            } 
+            else{
                 sb.append(c);
             }
         }
@@ -98,7 +191,9 @@ public class Show{
         String[] listed = campos[10] != null && !campos[10].isEmpty() ? campos[10].split(", ") : new String[0];
 
         int year = -1;
-        try{ year = Integer.parseInt(campos[7]); } catch (Exception ignored){}
+        try{
+            year = Integer.parseInt(campos[7]);
+        }catch(Exception ignored){}
 
         return new Show(
                 campos[0], campos[1], campos[2],
@@ -116,23 +211,24 @@ public class Show{
         Scanner sc = new Scanner(System.in);
         String entrada = sc.nextLine();
 
-        while (!entrada.equals("FIM")){
+        while(!entrada.equals("FIM")){
             boolean encontrado = false;
 
-            try (BufferedReader br = new BufferedReader(new FileReader("/home/vicenzo/Documentos/GitHub/Lista-AEDS/AEDS-II/verde/TP02/disneyplus.csv"))){
-                br.readLine(); // pular cabeçalho
+            try(BufferedReader br = new BufferedReader(new FileReader("/home/vicenzo/Documentos/GitHub/Lista-AEDS/AEDS-II/verde/TP02/disneyplus.csv"))){
+                br.readLine();
                 String linha;
 
-                while ((linha = br.readLine()) != null){
+                while((linha = br.readLine()) != null){
                     Show show = parseLinha(linha);
 
-                    if (show.getSHOW_ID().equals(entrada)){
+                    if(show.getSHOW_ID().equals(entrada)){
                         show.print();
                         encontrado = true;
                         break;
                     }
                 }
-            } catch (IOException e){
+            }
+            catch(IOException e){
                 e.printStackTrace();
             }
 
