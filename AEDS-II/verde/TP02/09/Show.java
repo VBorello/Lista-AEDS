@@ -1,349 +1,216 @@
-import java.io.*;
-import java.text.*;
-import java.util.*;
-
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Show{
-    
-    private String showId;
-    private String type;
-    private String title;
-    private String director;
-    private String[] cast;
-    private String country;
-    private Date dateAdded;
-    private int releaseYear;
-    private String rating;
-    private String duration;
-    private String[] listedIn;
 
-    //construtores
+    private String SHOW_ID;
+    private String TYPE;
+    private String TITLE;
+    private String DIRECTOR;
+    private String[] CAST;
+    private String COUNTRY;
+    private String DATE_ADDED;
+    private int RELEASE_YEAR;
+    private String RATING;
+    private String DURATION;
+    private String[] LISTED_IN;
+
     public Show(){
-        this.showId = "NaN";
-        this.type = "NaN";
-        this.title = "NaN";
-        this.director = "NaN";
-        this.cast = new String[]{"NaN"};
-        this.country = "NaN";
-        this.dateAdded = new Date(0);
-        this.releaseYear = 0;
-        this.rating = "NaN";
-        this.duration = "NaN";
-        this.listedIn = new String[]{"NaN"};
+
+        this.SHOW_ID = this.TYPE = this.TITLE = this.DIRECTOR = this.COUNTRY = this.DATE_ADDED = this.RATING = this.DURATION = "NaN";
+        this.CAST = new String[0];
+        this.LISTED_IN = new String[0];
+        this.RELEASE_YEAR = 0;
     }
 
-    public Show(String showId, String title){
-        this();
-        this.showId = showId;
-        this.title = title;
+    public Show(String SHOW_ID, String TYPE, String TITLE, String DIRECTOR, String[] CAST,
+                String COUNTRY, String DATE_ADDED, int RELEASE_YEAR, String RATING,
+                String DURATION, String[] LISTED_IN){
+
+        this.SHOW_ID = SHOW_ID;
+        this.TYPE = TYPE;
+        this.TITLE = TITLE;
+        this.DIRECTOR = DIRECTOR;
+        this.CAST = CAST;
+        this.COUNTRY = COUNTRY;
+        this.DATE_ADDED = DATE_ADDED;
+        this.RELEASE_YEAR = RELEASE_YEAR;
+        this.RATING = RATING;
+        this.DURATION = DURATION;
+        this.LISTED_IN = LISTED_IN;
     }
 
-    //setts getts
-    public String getShowId(){
-        return showId;
-    }
-    public void setShowId(String showId){
-        this.showId = showId;
-    }
-
-    public String getType(){
-        return type;
-    }
-    public void setType(String type){
-        this.type = type;
-    }
-
-    public String getTitle(){
-        return title;
-    }
-    public void setTitle(String title){
-        this.title = title;
-    }
-
-    public String getDirector(){
-        return director;
-    }
-    public void setDirector(String director){
-        this.director = director;
-    }
-
-    public String[] getCast(){
-        return cast;
-    }
-    public void setCast(String[] cast){ 
-        this.cast = cast;
-        Arrays.sort(this.cast);
-    }
-
-    public String getCountry(){
-        return country;
-    }
-    public void setCountry(String country){
-        this.country = country;
-    }
-
-    public Date getDateAdded(){
-        return dateAdded;
-    }
-    public void setDateAdded(Date dateAdded){
-        this.dateAdded = dateAdded;
-    }
-
-    public int getReleaseYear(){
-        return releaseYear;
-    }
-    public void setReleaseYear(int releaseYear){
-        this.releaseYear = releaseYear;
-    }
-
-    public String getRating(){
-        return rating;
-    }
-    public void setRating(String rating){
-        this.rating = rating;
-    }
-
-    public String getDuration(){
-        return duration;
-    }
-    public void setDuration(String duration){
-        this.duration = duration;
-    }
-
-    public String[] getListedIn(){
-        return listedIn;
-    }
-    public void setListedIn(String[] listedIn){ 
-        this.listedIn = listedIn;
-        Arrays.sort(this.listedIn);
-    }
-
-    //clone
     public Show clone(){
-        Show cloned = new Show();
-        cloned.showId = this.showId;
-        cloned.type = this.type;
-        cloned.title = this.title;
-        cloned.director = this.director;
-        cloned.cast = this.cast.clone();
-        cloned.country = this.country;
-        cloned.dateAdded = (Date) this.dateAdded.clone();
-        cloned.releaseYear = this.releaseYear;
-        cloned.rating = this.rating;
-        cloned.duration = this.duration;
-        cloned.listedIn = this.listedIn.clone();
-        return cloned;
+        return new Show(SHOW_ID, TYPE, TITLE, DIRECTOR, CAST.clone(), COUNTRY, DATE_ADDED, RELEASE_YEAR, RATING, DURATION, LISTED_IN.clone());
     }
 
-    //ler
-    public void ler(String line){
-
-        String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-        
-        try{
-            this.showId = parts[0].isEmpty() ? "NaN" : parts[0];
-            this.type = parts[1].isEmpty() ? "NaN" : parts[1];
-            this.title = parts[2].isEmpty() ? "NaN" : parts[2];
-            this.director = parts[3].isEmpty() ? "NaN" : parts[3];
-            
-            //cast
-            if(parts[4].isEmpty() || parts[4].equals("\"\"")){
-                this.cast = new String[]{"NaN"};
-            }
-            else{
-                String castStr = parts[4].replace("\"", "");
-                this.cast = castStr.split(",\\s*");
-                Arrays.sort(this.cast);
-            }
-            
-            this.country = parts[5].isEmpty() ? "NaN" : parts[5];
-            
-            //date
-            if(parts[6].isEmpty()){
-                this.dateAdded = new Date(0);
-            }
-            else{
-                try{
-                    SimpleDateFormat format = new SimpleDateFormat("MMMM d, yyyy");
-                    this.dateAdded = format.parse(parts[6]);
-                }
-                catch(Exception e){
-                    this.dateAdded = new Date(0);
-                }
-            }
-            
-            this.releaseYear = parts[7].isEmpty() ? 0 : Integer.parseInt(parts[7]);
-            this.rating = parts[8].isEmpty() ? "NaN" : parts[8];
-            this.duration = parts[9].isEmpty() ? "NaN" : parts[9];
-            
-            //listed_in
-            if(parts[10].isEmpty() || parts[10].equals("\"\"")){
-                this.listedIn = new String[]{"NaN"};
-            } 
-            else{
-                String listedInStr = parts[10].replace("\"", "");
-                this.listedIn = listedInStr.split(",\\s*");
-                Arrays.sort(this.listedIn);
-            }
-        }
-        catch (ArrayIndexOutOfBoundsException e){
-            // Handle error if needed
-        }
-    }
-
-    //print
     public void imprimir(){
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
-        String dateStr = (dateAdded.getTime() == 0) ? "NaN" : dateFormat.format(dateAdded);
-        
-        System.out.print(
-            "[=> " + showId + " ## " + title + " ## " + type + " ## " + director + " ## " + 
-            Arrays.toString(cast) + " ## " + country + " ## " + dateStr + " ## " + 
-            (releaseYear == 0 ? "NaN" : releaseYear) + " ## " + rating + " ## " + duration + " ## " + 
-            Arrays.toString(listedIn) + " ##"
-        );
-        
-        System.out.println();
+        System.out.print("=> " + SHOW_ID + " ## " + TITLE + " ## " + TYPE + " ## " + DIRECTOR + " ## ");
+        System.out.print(Arrays.toString(CAST) + " ## " + COUNTRY + " ## " + DATE_ADDED + " ## ");
+        System.out.print(RELEASE_YEAR + " ## " + RATING + " ## " + DURATION + " ## ");
+        System.out.println(Arrays.toString(LISTED_IN) + " ##");
     }
-    
 
-    //main heap sort
-    public static void main(String[] args){
-        ArrayList<Show> shows = new ArrayList<>();
-        String line;
-        
-        try(BufferedReader br = new BufferedReader(new FileReader("/tmp/disneyplus.csv"))){
-        //"/home/vicenzo/Documentos/GitHub/Lista-AEDS/AEDS-II/verde/TP02/disneyplus.csv"
-        
-            br.readLine(); // Skip header
-            
-            while((line = br.readLine()) != null){
-        
-                Show show = new Show();
-                show.ler(line);
-                shows.add(show);
+    public void ler(String linha){
+
+        String[] campos = new String[12];
+        int pos = 0;
+        boolean dentroAspas = false;
+        StringBuilder campo = new StringBuilder();
+
+        for(int i = 0; i < linha.length(); i++){
+           
+            char c = linha.charAt(i);
+            if (c == '\"') dentroAspas = !dentroAspas;
+            else if(c == ',' && !dentroAspas){
+                campos[pos++] = campo.toString().trim();
+                campo.setLength(0);
             }
-        } 
-        catch(IOException e){
-            System.err.println("Erro ao ler o arquivo: " + e.getMessage());
-            return;
+            else campo.append(c);
         }
+        campos[pos] = campo.toString().trim();
+
+        this.SHOW_ID = campos[0].isEmpty() ? "NaN" : campos[0];
+        this.TYPE = campos[1].isEmpty() ? "NaN" : campos[1];
+        this.TITLE = campos[2].isEmpty() ? "NaN" : campos[2];
+        this.DIRECTOR = campos[3].isEmpty() ? "NaN" : campos[3];
+        this.CAST = campos[4].isEmpty() ? new String[] { "NaN" } : campos[4].split(", ");
+        Arrays.sort(this.CAST);
+        this.COUNTRY = campos[5].isEmpty() ? "NaN" : campos[5];
+        this.DATE_ADDED = campos[6].isEmpty() ? "March 1, 1900" : campos[6];
         
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<String> ids = new ArrayList<>();
-        
-        while(scanner.hasNextLine()){
-            
-            String id = scanner.nextLine().trim();
-            if(id.equals("FIM")) break;
-            ids.add(id);
+        try{
+            this.RELEASE_YEAR = Integer.parseInt(campos[7]);
         }
-        scanner.close();
+        catch (Exception e){
+
+            this.RELEASE_YEAR = 0;
+        }
+
+        this.RATING = campos[8].isEmpty() ? "NaN" : campos[8];
+        this.DURATION = campos[9].isEmpty() ? "NaN" : campos[9];
+        this.LISTED_IN = campos[10].isEmpty() ? new String[] { "NaN" } : campos[10].split(", ");
+        Arrays.sort(this.LISTED_IN);
+    }
+
+    public String getDIRECTOR(){
+        return this.DIRECTOR;
+    }
+
+    public String getTITLE(){
+        return this.TITLE;
+    }
+
+    public static void main(String[] args) throws Exception{
+
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        String linha;
+        String[] entradas = new String[1000];
+        int n = 0;
+
+        while(!(linha = teclado.readLine()).equals("FIM")){
+            entradas[n++] = linha;
+        }
+
+        String[] csv = new String[10000];
+        int m = 0;
+        BufferedReader br = new BufferedReader(new FileReader("/tmp/disneyplus.csv"));
+        //home/vicenzo/Documentos/GitHub/Lista-AEDS/AEDS-II/verde/TP02/disneyplus.csv
         
-        //filtro
-        ArrayList<Show> filteredShows = new ArrayList<>();
+        br.readLine();
+        while((linha = br.readLine()) != null){
+            csv[m++] = linha;
+        }
+
+        br.close();
+
+        Show[] lista = new Show[n];
         
-        for(String id : ids){
-            for(Show show : shows){
-                if(show.getShowId().equals(id)){
-                    filteredShows.add(show);
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(csv[j].startsWith(entradas[i] + ",")){
+                
+                    lista[i] = new Show();
+                    lista[i].ler(csv[j]);
                     break;
                 }
             }
         }
-        
-        Show[] showsArray = filteredShows.toArray(new Show[0]);
-        
-        //heap Sort
-        long startTime = System.currentTimeMillis();
-        int[] counters = heapSort(showsArray);
-        long endTime = System.currentTimeMillis();
-        long executionTime = endTime - startTime;
-        
-        //arquivo log 
-        try(PrintWriter writer = new PrintWriter("matricula_heapsort.txt")){
-            writer.println("123456" + "\t" + counters[0] + "\t" + counters[1] + "\t" + executionTime);
-        } 
-        catch(FileNotFoundException e){
-            System.err.println("Erro ao criar arquivo de log: " + e.getMessage());
+
+        //heap
+        int comp = 0, mov = 0;
+
+        for(int tam = 2; tam <= n; tam++){
+            for(int i = tam - 1; i > 0 && (comp++) >= 0; i = (i - 1) / 2){
+                if(compare(lista[i], lista[(i - 1) / 2]) > 0){
+                
+                    Show tmp = lista[i]; mov++;
+                    lista[i] = lista[(i - 1) / 2];
+                    lista[(i - 1) / 2] = tmp;
+                }
+            }
         }
+
+        for(int tam = n; tam > 1; tam--){
+           
+            Show tmp = lista[0]; mov++;
+            lista[0] = lista[tam - 1];
+            lista[tam - 1] = tmp;
+
+            reconstroi(lista, tam - 1, comp, mov);
+        }
+
+        for(int i = 0; i < n; i++){
+
+            lista[i].imprimir();
+        }
+
+        long tempo = System.currentTimeMillis();
         
-        for (Show show : showsArray){
-            show.imprimir();
+        java.io.FileWriter fw = new java.io.FileWriter("matricula_heapsort.txt");
+        fw.write("802305\t" + comp + "\t" + mov + "\t" + tempo + "\n");
+        fw.close();
+    }
+
+    public static void reconstroi(Show[] array, int tam, int comp, int mov){
+
+        int i = 0;
+        while(i < tam / 2){
+            
+            int filho = getMaiorFilho(array, i, tam, comp);
+            if(compare(array[filho], array[i]) > 0){
+
+                Show tmp = array[i]; mov++;
+                array[i] = array[filho];
+                array[filho] = tmp;
+                i = filho;
+            } 
+            else{
+                break;
+            }
         }
     }
 
-    // Heap Sort implementation
-    private static int[] heapSort(Show[] arr){
-        
-        int comparisons = 0;
-        int movements = 0;
-        int n = arr.length;
-        
-        for(int i = n / 2 - 1; i >= 0; i--){
-           
-            int[] counters = heapify(arr, n, i);
-            comparisons += counters[0];
-            movements += counters[1];
+    public static int getMaiorFilho(Show[] array, int i, int tam, int comp){
+
+        int filhoEsq = 2 * i + 1;
+        int filhoDir = 2 * i + 2;
+
+        if (filhoDir < tam && compare(array[filhoDir], array[filhoEsq]) > 0){
+            
+            return filhoDir;
         }
-        
-        for(int i = n - 1; i > 0; i--){
-            //mover a raiz atual para o ultimo
-            Show temp = arr[0];
-            arr[0] = arr[i];
-            arr[i] = temp;
-            movements += 3; 
-           
-            int[] counters = heapify(arr, i, 0);
-            comparisons += counters[0];
-            movements += counters[1];
-        }
-        
-        return new int[]{comparisons, movements};
+
+        return filhoEsq;
     }
 
-    private static int[] heapify(Show[] arr, int n, int i){
-
-        int comparisons = 0;
-        int movements = 0;
-        int largest = i; //inicializar a maior raiz
-        int l = 2 * i + 1; // left = 2*i + 1
-        int r = 2 * i + 2; // right = 2*i + 2
+    public static int compare(Show a, Show b){
         
-        
-        if(l < n){
-            comparisons++;
-        
-            if(arr[l].getTitle().compareTo(arr[largest].getTitle()) > 0){
-                largest = l;
-            }
-        }
-        
-        if(r < n){
-            comparisons++;
-            
-            if(arr[r].getTitle().compareTo(arr[largest].getTitle()) > 0){
-                largest = r;
-            }
-        }
-        
-        //se o maior não for raiz
-        if(largest != i){
-            
-            Show swap = arr[i];
-            arr[i] = arr[largest];
-            arr[largest] = swap;
-            movements += 3;
-            
-            int[] counters = heapify(arr, n, largest);
-            comparisons += counters[0];
-            movements += counters[1];
-        }
-        
-        return new int[]{comparisons, movements};
+        int c = a.getDIRECTOR().compareTo(b.getDIRECTOR());
+        if (c != 0) return c;
+        return a.getTITLE().compareTo(b.getTITLE());
     }
 }
