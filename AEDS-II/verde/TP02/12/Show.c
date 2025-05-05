@@ -2,250 +2,237 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <ctype.h>
 
-#define MAX_SHOWS 1368
-#define MAX_STRING 500
+#define MAX 1000
+#define TAM_CAMPO 200
+#define MATRÍCULA "802305"
 
 typedef struct{
-    
-    char showId[50];
-    char type[50];
-    char title[150];
-    char director[300];
-    char cast[500];
-    char country[100];
-    char dateAdded[50];
-    int releaseYear;
-    char rating[50];
-    char duration[50];
-    char listedIn[300];
+
+    char show_id[TAM_CAMPO];
+    char type[TAM_CAMPO];
+    char title[TAM_CAMPO];
+    char director[TAM_CAMPO];
+    char cast[5][TAM_CAMPO];
+    int qtd_cast;
+    char country[TAM_CAMPO];
+    char date_added[TAM_CAMPO];
+    int dia, mes, ano;
+    int release_year;
+    char rating[TAM_CAMPO];
+    char duration[TAM_CAMPO];
+    char listed_in[5][TAM_CAMPO];
+    int qtd_listed;
 
 } Show;
 
-int comparisons = 0;
-int movements = 0;
+int mesParaInt(char *mes){
 
-void ler(Show *show, char *line);
-void imprimir(Show show);
-void bubbleSort(Show arr[], int n);
-void swap(Show *a, Show *b);
-void formatArrayString(char *dest, const char *src);
-void parseCSVField(char *dest, char **src);
-void sortStringArray(char *array[], int count);
+    if(strcmp(mes, "January") == 0) return 1;
+    if(strcmp(mes, "February") == 0) return 2;
+    if(strcmp(mes, "March") == 0) return 3;
+    if(strcmp(mes, "April") == 0) return 4;
+    if(strcmp(mes, "May") == 0) return 5;
+    if(strcmp(mes, "June") == 0) return 6;
+    if(strcmp(mes, "July") == 0) return 7;
+    if(strcmp(mes, "August") == 0) return 8;
+    if(strcmp(mes, "September") == 0) return 9;
+    if(strcmp(mes, "October") == 0) return 10;
+    if(strcmp(mes, "November") == 0) return 11;
+    if(strcmp(mes, "December") == 0) return 12;
+    return 0;
+
+}
+
+void parseData(char *data, int *dia, int *mes, int *ano){
+    
+    if(strcmp(data, "") == 0){
+        *dia = 1;
+        *mes = 1;
+        *ano = 1900;
+        return;
+    }
+    
+    char mesStr[TAM_CAMPO];
+    sscanf(data, "%[^ ] %d, %d", mesStr, dia, ano);
+    *mes = mesParaInt(mesStr);
+}
+
+void lerShow(char *linha, Show *s){
+    
+    char *campos[12];
+    int i = 0, j = 0;
+    int dentroAspas = 0;
+    char *token = malloc(strlen(linha) + 1);
+    
+    strcpy(token, linha);
+    char *p = token;
+
+    campos[i] = p;
+    
+    while(*p){
+    
+        if(*p == '"') dentroAspas = !dentroAspas;
+    
+        else if(*p == ',' && !dentroAspas){
+            *p = '\0';
+            campos[++i] = p + 1;
+        }
+    
+        p++;
+    }
+
+    strcpy(s->show_id, campos[0]);
+    strcpy(s->type, campos[1]);
+    
+    strcpy(s->title, campos[2]);
+    strcpy(s->director, strlen(campos[3]) == 0 ? "NaN" : campos[3]);
+
+    s->qtd_cast = 0;
+    
+    if(strlen(campos[4]) == 0){
+        strcpy(s->cast[0], "NaN");
+        s->qtd_cast = 1;
+    }
+    else{
+        char *token_cast = strtok(campos[4], ",");
+    
+        while(token_cast && s->qtd_cast < 5){
+            while(*token_cast == ' ') token_cast++;
+            strcpy(s->cast[s->qtd_cast++], token_cast);
+            token_cast = strtok(NULL, ",");
+        }
+    }
+
+    strcpy(s->country, strlen(campos[5]) == 0 ? "NaN" : campos[5]);
+    strcpy(s->date_added, strlen(campos[6]) == 0 ? "March 1, 1900" : campos[6]);
+    
+    parseData(s->date_added, &s->dia, &s->mes, &s->ano);
+
+    s->release_year = atoi(campos[7]);
+    
+    strcpy(s->rating, strlen(campos[8]) == 0 ? "NaN" : campos[8]);
+    strcpy(s->duration, strlen(campos[9]) == 0 ? "NaN" : campos[9]);
+
+    s->qtd_listed = 0;
+    
+    if(strlen(campos[10]) == 0){
+        strcpy(s->listed_in[0], "NaN");
+        s->qtd_listed = 1;
+    }
+    else{
+    
+        char *token_listed = strtok(campos[10], ",");
+        while(token_listed && s->qtd_listed < 5){
+            while(*token_listed == ' ') token_listed++;
+            strcpy(s->listed_in[s->qtd_listed++], token_listed);
+            token_listed = strtok(NULL, ",");
+        }
+    }
+
+    free(token);
+}
+
+void imprimir(Show s){
+    
+    printf("=> %s ## %s ## %s ## %s ## [", s.show_id, s.title, s.type, s.director);
+    for(int i = 0; i < s.qtd_cast; i++){
+        printf("%s", s.cast[i]);
+        if(i < s.qtd_cast - 1) printf(", ");
+    }
+    
+    printf("] ## %s ## %s ## %d ## %s ## %s ## [", s.country, s.date_added, s.release_year, s.rating, s.duration);
+    
+    for(int i = 0; i < s.qtd_listed; i++){
+        printf("%s", s.listed_in[i]);
+        if(i < s.qtd_listed - 1) printf(", ");
+    }
+    printf("] ##\n");
+}
+
+int compararData(Show a, Show b){
+    
+    if(a.ano != b.ano) return a.ano - b.ano;
+    if(a.mes != b.mes) return a.mes - b.mes;
+    if(a.dia != b.dia) return a.dia - b.dia;
+    return strcmp(a.title, b.title);
+}
+
+void bolha(Show *v, int n, int *comp, int *mov){
+    
+    for(int i = n - 1; i > 0; i--){
+        for(int j = 0; j < i; j++){
+            (*comp)++;
+    
+            if(compararData(v[j], v[j + 1]) > 0){
+                Show tmp = v[j];
+                v[j] = v[j + 1];
+                v[j + 1] = tmp;
+                (*mov) += 3;
+            }
+        }
+    }
+}
 
 int main(){
+    
+    char entrada[MAX][TAM_CAMPO];
+    int n = 0;
 
-    Show shows[MAX_SHOWS];
-    Show filteredShows[MAX_SHOWS];
-    int filteredCount = 0;
-    char line[MAX_STRING];
-    char id[50];
-    clock_t start, end;
-    double cpu_time_used;
+    while(1){
+    
+        fgets(entrada[n], TAM_CAMPO, stdin);
+    
+        entrada[n][strcspn(entrada[n], "\n")] = 0;
+        if(strcmp(entrada[n], "FIM") == 0) break;
+        n++;
+    }
 
-    FILE *file = fopen("/tmp/disneyplus.csv", "r");
+    FILE *arq = fopen("/tmp/disneyplus.csv", "r");
+    
+    if(!arq){
 
-    if(!file){
-        perror("Error opening file");
+        printf("Erro ao abrir arquivo!\n");
         return 1;
     }
 
-    fgets(line, sizeof(line), file);
+    char linha[1000];
+    fgets(linha, 1000, arq);
 
-    int totalShows = 0;
+    Show lista[MAX];
+    int total = 0;
 
-    while(fgets(line, sizeof(line), file) && totalShows < MAX_SHOWS){
+    while(fgets(linha, 1000, arq) != NULL){
 
-        ler(&shows[totalShows], line);
-        totalShows++;
-    }
-
-    fclose(file);
-
-    while(1){
-
-        scanf("%s", id);
-        if (strcmp(id, "FIM") == 0) break;
-
-        for(int i = 0; i < totalShows; i++){
-            if(strcmp(shows[i].showId, id) == 0){
-                filteredShows[filteredCount] = shows[i];
-                filteredCount++;
+        for(int i = 0; i < n; i++){
+        
+            if(strncmp(linha, entrada[i], strlen(entrada[i])) == 0 && linha[strlen(entrada[i])] == ','){
+   
+                lerShow(linha, &lista[total++]);
                 break;
             }
         }
     }
 
-    start = clock();
-    bubbleSort(filteredShows, filteredCount);
-    end = clock();
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC * 1000;
+    fclose(arq);
+
+    int comp = 0, mov = 0;
+    clock_t inicio = clock();
+   
+    bolha(lista, total, &comp, &mov);
+    clock_t fim = clock();
+
+    for(int i = 0; i < total; i++){
+
+        imprimir(lista[i]);
+    }
+
+    double tempo = ((double)(fim - inicio)) / CLOCKS_PER_SEC * 1000;
 
     FILE *log = fopen("matricula_bolha.txt", "w");
-
-    if(log){
-        fprintf(log, "123456\t%d\t%d\t%.0f\n", comparisons, movements, cpu_time_used);
-        fclose(log);
-    }
-
-    for(int i = 0; i < filteredCount; i++){
-        imprimir(filteredShows[i]);
-    }
+    
+    fprintf(log, MATRÍCULA "\t%d\t%d\t%.0lf\n", comp, mov, tempo);
+    fclose(log);
 
     return 0;
-}
-
-void parseCSVField(char *dest, char **src){
-    int quoted = 0;
-    char *ptr = *src;
-    char *dest_ptr = dest;
-    
-    while (isspace(*ptr)) ptr++;
-    
-    if (*ptr == '"'){
-        quoted = 1;
-        ptr++;
-    }
-    
-    while(*ptr){
-
-        if(quoted && *ptr == '"'){
-            if(*(ptr+1) == '"'){
-                *dest_ptr++ = *ptr++;
-                ptr++;
-            } 
-            else{
-                ptr++;
-                break;
-            }
-        }
-        else if(!quoted && *ptr == ','){
-            break;
-        } 
-        else{
-            *dest_ptr++ = *ptr++;
-        }
-    }
-    
-    if(*ptr == ',') ptr++;
-    *src = ptr;
-    *dest_ptr = '\0';
-    
-    dest_ptr--;
-    while(dest_ptr >= dest && isspace(*dest_ptr)){
-        *dest_ptr-- = '\0';
-    }
-}
-
-void ler(Show *show, char *line){
-
-    char *ptr = line;
-    
-    parseCSVField(show->showId, &ptr);
-    parseCSVField(show->type, &ptr);
-    parseCSVField(show->title, &ptr);
-    parseCSVField(show->director, &ptr);
-    parseCSVField(show->cast, &ptr);
-    parseCSVField(show->country, &ptr);
-    parseCSVField(show->dateAdded, &ptr);
-    
-    char year[20];
-    parseCSVField(year, &ptr);
-    show->releaseYear = atoi(year);
-    
-    parseCSVField(show->rating, &ptr);
-    parseCSVField(show->duration, &ptr);
-    parseCSVField(show->listedIn, &ptr);
-    
-    if(strlen(show->director) == 0) strcpy(show->director, "NaN");
-    if(strlen(show->dateAdded) == 0) strcpy(show->dateAdded, "NaN");
-}
-
-void sortStringArray(char *array[], int count){
-
-    for(int i = 0; i < count-1; i++){
-        for(int j = i+1; j < count; j++){
-            if(strcmp(array[i], array[j]) > 0){
-                char *temp = array[i];
-                array[i] = array[j];
-                array[j] = temp;
-            }
-        }
-    }
-}
-
-void formatArrayString(char *dest, const char *src){
-
-    strcpy(dest, "[");
-    char temp[strlen(src)+1];
-    strcpy(temp, src);
-    
-    char *elements[100];
-    int count = 0;
-    char *token = strtok(temp, ",");
-    
-    while(token != NULL && count < 100){
-
-        while (isspace((unsigned char)*token)) token++;
-        char *end = token + strlen(token) - 1;
-        while (end > token && isspace((unsigned char)*end)) end--;
-        *(end+1) = '\0';
-        
-        elements[count++] = token;
-        token = strtok(NULL, ",");
-    }
-    
-    sortStringArray(elements, count);
-    
-    for(int i = 0; i < count; i++){
-        if(i > 0) strcat(dest, ", ");
-        strcat(dest, elements[i]);
-    }
-    
-    strcat(dest, "]");
-}
-
-void imprimir(Show show){
-
-    char formattedCast[600];
-    char formattedListedIn[400];
-    
-    formatArrayString(formattedCast, show.cast);
-    formatArrayString(formattedListedIn, show.listedIn);
-    
-    printf("=> %s ## %s ## %s ## %s ## %s ## %s ## %s ## %d ## %s ## %s ## %s ##\n",
-           show.showId,
-           show.title,
-           show.type,
-           show.director,
-           formattedCast,
-           show.country,
-           show.dateAdded,
-           show.releaseYear,
-           show.rating,
-           show.duration,
-           formattedListedIn);
-}
-
-void bubbleSort(Show arr[], int n){
-
-    for(int i = 0; i < n-1; i++){
-        for(int j = 0; j < n-i-1; j++){
-            comparisons++;
-        
-            int dateCmp = strcmp(arr[j].dateAdded, arr[j+1].dateAdded);
-            if(dateCmp > 0 || (dateCmp == 0 && strcmp(arr[j].title, arr[j+1].title) > 0)){
-                swap(&arr[j], &arr[j+1]);
-                movements += 3;
-            }
-        }
-    }
-}
-
-void swap(Show *a, Show *b){
-
-    Show temp = *a;
-    *a = *b;
-    *b = temp;
 }

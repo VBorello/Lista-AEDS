@@ -72,7 +72,6 @@ int main(){
             if(strcmp(shows[i].showId, id) == 0) {
                 filteredShows[filteredCount] = shows[i];
                 filteredCount++;
-                
                 break;
             }
         }
@@ -92,7 +91,6 @@ int main(){
     }
 
     for(int i = 0; i < filteredCount; i++){
-
         imprimir(filteredShows[i]);
     }
 
@@ -139,13 +137,11 @@ void parseCSVField(char *dest, char **src){
     dest_ptr--;
     
     while(dest_ptr >= dest && isspace(*dest_ptr)){
-
         *dest_ptr-- = '\0';
     }
 }
 
 void ler(Show *show, char *line){
-
     char *ptr = line;
     
     parseCSVField(show->showId, &ptr);
@@ -169,11 +165,9 @@ void ler(Show *show, char *line){
 }
 
 void sortStringArray(char *array[], int count){
-
     for(int i = 0; i < count-1; i++) {
         for(int j = i+1; j < count; j++) {
             if(strcmp(array[i], array[j]) > 0) {
-                
                 char *temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
@@ -183,7 +177,6 @@ void sortStringArray(char *array[], int count){
 }
 
 void formatArrayString(char *dest, const char *src){
-
     strcpy(dest, "[");
     char temp[strlen(src)+1];
     strcpy(temp, src);
@@ -193,7 +186,6 @@ void formatArrayString(char *dest, const char *src){
     char *token = strtok(temp, ",");
     
     while(token != NULL && count < 100){
-
         while(isspace((unsigned char)*token)) token++;
         char *end = token + strlen(token) - 1;
         while(end > token && isspace((unsigned char)*end)) end--;
@@ -214,7 +206,6 @@ void formatArrayString(char *dest, const char *src){
 }
 
 void imprimir(Show show){
-
     char formattedCast[600];
     char formattedListedIn[400];
     
@@ -236,29 +227,32 @@ void imprimir(Show show){
 }
 
 int compareDates(const char *date1, const char *date2){
-    
     if(strcmp(date1, "NaN") == 0 && strcmp(date2, "NaN") == 0) return 0;
     if(strcmp(date1, "NaN") == 0) return -1;
     if(strcmp(date2, "NaN") == 0) return 1;
-    
-    return strcmp(date1, date2);
+
+    // Supondo o formato yyyy-mm-dd para as datas
+    int year1, month1, day1;
+    int year2, month2, day2;
+
+    if (sscanf(date1, "%d-%d-%d", &year1, &month1, &day1) != 3) return strcmp(date1, date2);
+    if (sscanf(date2, "%d-%d-%d", &year2, &month2, &day2) != 3) return strcmp(date1, date2);
+
+    if (year1 != year2) return year1 - year2;
+    if (month1 != month2) return month1 - month2;
+    return day1 - day2;
 }
 
 int compareShows(const Show *a, const Show *b){
-    
     int dateCompare = compareDates(a->dateAdded, b->dateAdded);
-   
-    if(dateCompare != 0){
+    if(dateCompare != 0) {
         return dateCompare;
     }
-
     return strcmp(a->title, b->title);
 }
 
 void quickSort(Show arr[], int low, int high){
-    
     if(low < high){
-        
         int pi = partition(arr, low, high);
         quickSort(arr, low, pi - 1);
         quickSort(arr, pi + 1, high);
@@ -266,7 +260,6 @@ void quickSort(Show arr[], int low, int high){
 }
 
 int partition(Show arr[], int low, int high){
-
     Show pivot = arr[high];
     int i = (low - 1);
 
@@ -285,7 +278,6 @@ int partition(Show arr[], int low, int high){
 }
 
 void swap(Show *a, Show *b){
-
     Show temp = *a;
     *a = *b;
     *b = temp;

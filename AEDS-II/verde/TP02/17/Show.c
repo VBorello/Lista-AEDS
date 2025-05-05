@@ -4,44 +4,34 @@
 #include <time.h>
 
 #define MAX 1000
-#define TAM_CAMPO 200
+#define TAM 200
+#define K 10
 #define MATRICULA "802305"
 
 typedef struct {
-    char show_id[TAM_CAMPO];
-    char type[TAM_CAMPO];
-    char title[TAM_CAMPO];
-    char director[TAM_CAMPO];
-    char cast[5][TAM_CAMPO];
+    char show_id[TAM];
+    char type[TAM];
+    char title[TAM];
+    char director[TAM];
+    char cast[5][TAM];
     int qtd_cast;
-    char country[TAM_CAMPO];
-    char date_added[TAM_CAMPO];
+    char country[TAM];
+    char date_added[TAM];
     int dia, mes, ano;
     int release_year;
-    char rating[TAM_CAMPO];
-    char duration[TAM_CAMPO];
-    char listed_in[5][TAM_CAMPO];
+    char rating[TAM];
+    char duration[TAM];
+    char listed_in[5][TAM];
     int qtd_listed;
 } Show;
 
 void parseData(char *data, int *dia, int *mes, int *ano) {
-    if (strcmp(data, "") == 0) {
-        *dia = 1;
-        *mes = 1;
-        *ano = 1900;
-        return;
-    }
-    char mesStr[TAM_CAMPO];
+    if (strcmp(data, "") == 0) { *dia = 1; *mes = 1; *ano = 1900; return; }
+    char mesStr[TAM];
     sscanf(data, "%[^ ] %d, %d", mesStr, dia, ano);
-
     char *meses[] = {"January","February","March","April","May","June",
                      "July","August","September","October","November","December"};
-    for (int i = 0; i < 12; i++) {
-        if (strcmp(mesStr, meses[i]) == 0) {
-            *mes = i + 1;
-            return;
-        }
-    }
+    for (int i = 0; i < 12; i++) if (strcmp(mesStr, meses[i]) == 0) { *mes = i + 1; return; }
     *mes = 1;
 }
 
@@ -117,80 +107,101 @@ void imprimir(Show s) {
     printf("] ##\n");
 }
 
-int maxReleaseYear(Show *v, int n) {
-    int max = v[0].release_year;
-    for (int i = 1; i < n; i++) {
-        if (v[i].release_year > max)
-            max = v[i].release_year;
-    }
-    return max;
+int comparar(Show a, Show b, int *comp) {
+    (*comp)++;
+    if (a.release_year != b.release_year)
+        return a.release_year - b.release_year;
+    return strcmp(a.title, b.title);
 }
 
-void countingSortPorDigito(Show *v, int n, int exp, int *comp, int *mov) {
-    Show output[n];
-    int count[10] = {0};
+void swap(Show *a, Show *b, int *mov) {
+    Show tmp = *a;
+    *a = *b;
+    *b = tmp;
+    (*mov) += 3;
+}
 
+void heapifyMin(Show *v, int n, int i, int *comp, int *mov) {
+    int menor = i;
+    int esq = 2*i + 1, dir = 2*i + 2;
+    if (esq < n && comparar(v[esq], v[menor], comp) < 0)
+        menor = esq;
+    if (dir < n && comparar(v[dir], v[menor], comp) < 0)
+        menor = dir;
+    if (menor != i) {
+        swap(&v[i], &v[menor], mov);
+        heapifyMin(v, n, menor, comp, mov);
+    }
+}
+
+void buildMinHeap(Show *v, int n, int *comp, int *mov) {
+    for (int i = n/2 - 1; i >= 0; i--)
+        heapifyMin(v, n, i, comp, mov);
+}
+
+void heapifyMax(Show *v, int n, int i, int *comp, int *mov) {
+    int maior = i;
+    int esq = 2*i + 1, dir = 2*i + 2;
+    if (esq < n && comparar(v[esq], v[maior], comp) > 0)
+        maior = esq;
+    if (dir < n && comparar(v[dir], v[maior], comp) > 0)
+        maior = dir;
+    if (maior != i) {
+        swap(&v[i], &v[maior], mov);
+        heapifyMax(v, n, maior, comp, mov);
+    }
+}
+
+void heapSortParcial(Show *v, int n, int *comp, int *mov) {
+    Show heap[K];
+    int tam = 0;
+
+    // Preenche os primeiros K elementos no heap mínimo
     for (int i = 0; i < n; i++) {
-        int digito = (v[i].release_year / exp) % 10;
-        count[digito]++;
-    }
-
-    for (int i = 1; i < 10; i++) count[i] += count[i - 1];
-
-    for (int i = n - 1; i >= 0; i--) {
-        int digito = (v[i].release_year / exp) % 10;
-        output[--count[digito]] = v[i];
-        (*mov) += 3;
-    }
-
-    for (int i = 0; i < n; i++) v[i] = output[i];
-}
-
-void desempatePorTitulo(Show *v, int n, int *comp, int *mov) {
-    for (int i = 1; i < n; i++) {
-        Show chave = v[i];
-        int j = i - 1;
-        while (j >= 0 && v[j].release_year == chave.release_year && strcmp(v[j].title, chave.title) > 0) {
-            (*comp)++;
-            v[j + 1] = v[j];
+        if (tam < K) {
+            heap[tam++] = v[i];
             (*mov) += 3;
-            j--;
+            if (tam == K) buildMinHeap(heap, K, comp, mov);
+        } else if (comparar(v[i], heap[0], comp) > 0) {
+            heap[0] = v[i];
+            (*mov) += 3;
+            heapifyMin(heap, K, 0, comp, mov);
         }
-        v[j + 1] = chave;
+    }
+
+    // Ordenar o heap final (k maiores)
+    for (int i = K/2 - 1; i >= 0; i--)
+        heapifyMax(heap, K, i, comp, mov);
+
+    for (int i = K-1; i > 0; i--) {
+        swap(&heap[0], &heap[i], mov);
+        heapifyMax(heap, i, 0, comp, mov);
+    }
+
+    // Copia os k maiores ordenados para início do vetor
+    for (int i = 0; i < K; i++) {
+        v[i] = heap[i];
         (*mov) += 3;
     }
-}
-
-void radixSort(Show *v, int n, int *comp, int *mov) {
-    int max = maxReleaseYear(v, n);
-    for (int exp = 1; max / exp > 0; exp *= 10)
-        countingSortPorDigito(v, n, exp, comp, mov);
-
-    desempatePorTitulo(v, n, comp, mov);
 }
 
 int main() {
-    char entrada[MAX][TAM_CAMPO];
+    char entrada[MAX][TAM];
     int n = 0;
     while (1) {
-        fgets(entrada[n], TAM_CAMPO, stdin);
+        fgets(entrada[n], TAM, stdin);
         entrada[n][strcspn(entrada[n], "\n")] = 0;
         if (strcmp(entrada[n], "FIM") == 0) break;
         n++;
     }
 
     FILE *arq = fopen("/tmp/disneyplus.csv", "r");
-    if (!arq) {
-        printf("Erro ao abrir o arquivo.\n");
-        return 1;
-    }
-
+    if (!arq) return 1;
     char linha[1000];
     fgets(linha, 1000, arq);
 
     Show lista[MAX];
     int total = 0;
-
     while (fgets(linha, 1000, arq)) {
         for (int i = 0; i < n; i++) {
             if (strncmp(linha, entrada[i], strlen(entrada[i])) == 0 && linha[strlen(entrada[i])] == ',') {
@@ -199,18 +210,17 @@ int main() {
             }
         }
     }
-
     fclose(arq);
 
     int comp = 0, mov = 0;
     clock_t inicio = clock();
-    radixSort(lista, total, &comp, &mov);
+    heapSortParcial(lista, total, &comp, &mov);
     clock_t fim = clock();
 
-    for (int i = 0; i < total; i++) imprimir(lista[i]);
+    for (int i = 0; i < K && i < total; i++) imprimir(lista[i]);
 
     double tempo = (double)(fim - inicio) * 1000.0 / CLOCKS_PER_SEC;
-    FILE *log = fopen("matricula_radixsort.txt", "w");
+    FILE *log = fopen("matricula_heapsort_parcial.txt", "w");
     fprintf(log, "%s\t%d\t%d\t%.0lf\n", MATRICULA, comp, mov, tempo);
     fclose(log);
 
