@@ -18,7 +18,7 @@ public class CalcularAlturaCadaSubArvore{
     public static int calcularAltura(No raiz){
         
         if(raiz == null){
-            return 0;
+            return -1;
         }
 
         int alturaEsquerda = calcularAltura(raiz.esquerda);
