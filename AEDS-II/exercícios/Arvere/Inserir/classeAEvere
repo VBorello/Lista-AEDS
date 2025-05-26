@@ -1,0 +1,71 @@
+import java.util.*;
+
+class No{
+    
+    No dir;
+    No esq;
+
+    char letra;
+    Lista lista;
+}
+
+class Celula{
+
+    Contato contato;
+    Celula prox;
+
+}
+
+class Lista{
+    
+    Celula prox;
+}
+
+class Contato {
+    
+    String cpf;
+    String nome;
+    String telefone;
+    String email;
+}
+
+class Agenda {
+
+    No raiz;
+
+    // Método para inserir um contato na árvore
+    public void inserir(Contato contato) {
+        char letraInicial = Character.toUpperCase(contato.nome.charAt(0)); 
+        raiz = inserirNo(raiz, letraInicial, contato);
+    }
+
+    private No inserirNo(No no, char letra, Contato contato){
+        
+        if (no == null) {
+            no = new No();
+            no.letra = letra;
+            no.lista = new Lista();
+        }
+
+        if (letra < no.letra) {
+        
+            no.esq = inserirNo(no.esq, letra, contato);
+        } 
+        else if (letra > no.letra) {
+        
+            no.dir = inserirNo(no.dir, letra, contato);
+        } 
+        else {
+            inserirNaLista(no.lista, contato);
+        }
+
+        return no;
+    }
+
+    private void inserirNaLista(Lista lista, Contato contato) {
+        Celula nova = new Celula();
+        nova.contato = contato;
+        nova.prox = lista.prox;
+        lista.prox = nova;
+    }
+}
