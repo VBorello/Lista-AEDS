@@ -3,18 +3,18 @@ import java.util.*;
 
 class Show{
 
-    String show_id;
-    String type;
-    String title;
-    String director;
-    String cast;
-    String country;
-    String date_added;
-    String rating;
-    String release_year;
-    String duration;
-    String listed_in;
-    String description;
+    String SHOW_ID;
+    String TYPE;
+    String TITLE;
+    String DIRECTOR;
+    String CAST;
+    String COUNTRY;
+    String DATE_ADDED;
+    String RATING;
+    String RELEASE_YEAR;
+    String DURATION;
+    String LISTED_IN;
+    String DESCRIPTION;
 
     public Show(){}
 
@@ -23,7 +23,7 @@ class Show{
         ArrayList<String> campos = new ArrayList<>();
 
         boolean entreAspas = false;
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
 
         for(int i = 0; i < linha.length(); i++){
             char c = linha.charAt(i);
@@ -32,45 +32,45 @@ class Show{
                 entreAspas = !entreAspas;
             } 
             else if (c == ',' && !entreAspas){
-                campos.add(sb.toString().trim());
-                sb.setLength(0);
+                campos.add(stringBuilder.toString().trim());
+                stringBuilder.setLength(0);
             } 
             else{
-                sb.append(c);
+                stringBuilder.append(c);
             }
         }
 
-        campos.add(sb.toString().trim());
+        campos.add(stringBuilder.toString().trim());
 
         int i = 0;
 
-        this.show_id = vazioParaNaN(campos.get(i++));
-        this.type = vazioParaNaN(campos.get(i++));
-        this.title = vazioParaNaN(campos.get(i++));
-        this.director = vazioParaNaN(campos.get(i++));
+        this.SHOW_ID = vazio(campos.get(i++));
+        this.TYPE = vazio(campos.get(i++));
+        this.TITLE = vazio(campos.get(i++));
+        this.DIRECTOR = vazio(campos.get(i++));
 
         String elenco = campos.get(i++);
         
         if(elenco.isEmpty()){
-            this.cast = "NaN";
+            this.CAST = "NaN";
         } 
         else{
         
             String[] nomes = elenco.split(",\\s*");
             Arrays.sort(nomes);
-            this.cast = String.join(", ", nomes);
+            this.CAST = String.join(", ", nomes);
         }
 
-        this.country = vazioParaNaN(campos.get(i++));
-        this.date_added = vazioParaNaN(campos.get(i++));
-        this.release_year = vazioParaNaN(campos.get(i++));
-        this.rating = vazioParaNaN(campos.get(i++));
-        this.duration = vazioParaNaN(campos.get(i++));
-        this.listed_in = vazioParaNaN(campos.get(i++));
-        this.description = vazioParaNaN(campos.get(i++));
+        this.COUNTRY = vazio(campos.get(i++));
+        this.DATE_ADDED = vazio(campos.get(i++));
+        this.RELEASE_YEAR = vazio(campos.get(i++));
+        this.RATING = vazio(campos.get(i++));
+        this.DURATION = vazio(campos.get(i++));
+        this.LISTED_IN = vazio(campos.get(i++));
+        this.DESCRIPTION = vazio(campos.get(i++));
     }
 
-    private String vazioParaNaN(String campo){
+    private String vazio(String campo){
         
         return campo.isEmpty() ? "NaN" : campo;
     }
@@ -78,18 +78,19 @@ class Show{
 
     public void imprimir(){
 
-        String[] categorias = listed_in.split(",\\s*");
+        String[] categorias = LISTED_IN.split(",\\s*");
         
         Arrays.sort(categorias);
         String categoriasOrdenadas = String.join(", ", categorias);
 
-        System.out.println("=> " + show_id + " ## " + title + " ## " + type + " ## " + director + " ## " +
-                           "[" + cast + "] ## " + country + " ## " + date_added + " ## " + release_year + " ## " +
-                           rating + " ## " + duration + " ## [" + categoriasOrdenadas + "] ##");
+        System.out.println("=> " + SHOW_ID + " ## " + TITLE + " ## " + TYPE + " ## " + DIRECTOR + " ## " +
+                           "[" + CAST + "] ## " + COUNTRY + " ## " + DATE_ADDED + " ## " + RELEASE_YEAR + " ## " +
+                           RATING + " ## " + DURATION + " ## [" + categoriasOrdenadas + "] ##");
     }
 
-    public String getTitle(){
-        return this.title;
+    public String getTITLE(){
+
+        return this.TITLE;
     }
 }
 
@@ -105,7 +106,7 @@ class Lista{
         n = 0;
     }
 
-    public void inserirInicio(Show show) throws Exception{
+    public void inicio(Show show) throws Exception{
         
         if(n >= array.length) throw new Exception("Erro ao inserir!");
         
@@ -117,15 +118,15 @@ class Lista{
         n++;
     }
 
-    public void inserirFim(Show show) throws Exception{
+    public void fim(Show show) throws Exception{
         
-        if(n >= array.length) throw new Exception("Erro ao inserir!");
+        if(n >= array.length) throw new Exception("Erro ao inserir");
         array[n++] = show;
     }
 
     public void inserir(Show show, int pos) throws Exception{
         
-        if(n >= array.length || pos < 0 || pos > n) throw new Exception("Erro ao inserir!");
+        if(n >= array.length || pos < 0 || pos > n) throw new Exception("Erro ao inserir");
         
         for(int i = n; i > pos; i--){
             array[i] = array[i - 1];
@@ -217,7 +218,7 @@ public class Main{
             if(entrada.equals("FIM")) break;
         
             Show s = buscarPorId(entrada);
-            if(s != null) lista.inserirFim(s);
+            if(s != null) lista.fim(s);
         }
 
         int n = Integer.parseInt(scanner.nextLine());
@@ -232,12 +233,12 @@ public class Main{
             if(cmd.equals("II")){
             
                 Show s = buscarPorId(partes[1]);
-                lista.inserirInicio(s);
+                lista.inicio(s);
             } 
             else if(cmd.equals("IF")){
             
                 Show s = buscarPorId(partes[1]);
-                lista.inserirFim(s);
+                lista.fim(s);
             } 
             else if(cmd.equals("I*")){
             
@@ -248,19 +249,19 @@ public class Main{
             else if(cmd.equals("RI")){
             
                 Show r = lista.removerInicio();
-                System.out.println("(R) " + r.getTitle());
+                System.out.println("(R) " + r.getTITLE());
             }
             else if(cmd.equals("RF")){
             
                 Show r = lista.removerFim();
-                System.out.println("(R) " + r.getTitle());
+                System.out.println("(R) " + r.getTITLE());
             }
             else if(cmd.equals("R*")){
             
                 int pos = Integer.parseInt(partes[1]);
                 Show r = lista.remover(pos);
             
-                System.out.println("(R) " + r.getTitle());
+                System.out.println("(R) " + r.getTITLE());
             }
         }
 
