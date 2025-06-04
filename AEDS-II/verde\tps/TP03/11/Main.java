@@ -120,7 +120,7 @@ public class Main{
                 soma.mostrar();
             } 
             else{
-                System.out.println("Dimenções incompativeis das matrizes para soma");
+                System.out.println("Dimensões incompatíveis para multiplicação.");
             }
 
             if(c1 == l2){
@@ -128,7 +128,7 @@ public class Main{
                 mult.mostrar();
             }
             else{
-                System.out.println("Dimenções incompativeis das matrizes para multiplicar");
+                System.out.println("Dimensões incompatíveis para multiplicação.");
             }
         }
 
