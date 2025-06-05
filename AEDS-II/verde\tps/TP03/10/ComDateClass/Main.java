@@ -49,6 +49,7 @@ class Data{
 }
 
     public boolean dataValida(){
+
         return (dia != 0 && mes != 0 && ano != 0);
     }
 
@@ -58,19 +59,19 @@ class Data{
             return 0;
         } 
         if(!this.dataValida()){
-            return 1; 
+            return -1;
         } 
         if(!other.dataValida()){
-            return -1;
-        }
-
+            return 1;
+        } 
+        
         if(this.ano != other.ano){
             return this.ano - other.ano;
         } 
         if(this.mes != other.mes){
             return this.mes - other.mes;
         } 
-        
+
         return this.dia - other.dia;
     }
 
@@ -118,6 +119,9 @@ class Show{
     String DURATION;
     String LISTED_IN;
     String DESCRIPTION;
+    int ordemInsercao;
+
+    
 
     public Show(String SHOW_ID, String TYPE, String TITLE,
                 String DIRECTOR, String CAST, String COUNTRY,
@@ -293,9 +297,9 @@ class listaDupla{
 
         i = (i == null) ? baixo : i.prox;
 
-        Show temp = i.show;
+        Show aux = i.show;
         i.show = cima.show;
-        cima.show = temp;
+        cima.show = aux;
         movimentos += 3;
 
         return i;
